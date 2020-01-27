@@ -9,25 +9,36 @@
 import Foundation
 
 public protocol TokenType {}
-typealias ParserToken = (value: String, type: TokenType)
 
-// TODO: there is probably a nicer way to define the token definition with a single enum + associated values (e.g. the index)
-typealias TokenDefinition = (index: Int, type: TokenType)
-
-class Tokenizer {
-    var regex: NSRegularExpression
-    var rules: [TokenDefinition]
+public class Tokenizer {
+    public typealias Token = (value: String, type: TokenType)
+    public typealias Definition = (index: Int, type: TokenType)
     
-    init(expression: String, rules: [TokenDefinition]) throws {
+    private enum DefaultTokenType: Int, TokenType {
+        case character = 1
+    }
+    
+    public enum SpecialTokens {
+        case ignored(token: AnyObject?)
+    }
+    
+    var regex: NSRegularExpression
+    var rules: [Definition]
+    
+    convenience init() {
+        try! self.init(expression: "(.)", rules: [(index:1, type: DefaultTokenType.character)])
+    }
+    
+    init(expression: String, rules: [Definition]) throws {
         self.regex = try NSRegularExpression(pattern: expression, options:.caseInsensitive)
         self.rules = rules
     }
     
-    func tokenize(sequence: String) -> [ParserToken] {
+    func tokenize(sequence: String) -> [Token] {
         let fasterSequence = sequence as NSString
         
         let matches = self.regex .matches(in: sequence, options: [], range: NSMakeRange(0, sequence.count))
-        var tokens: [ParserToken] = []
+        var tokens: [Token] = []
         
         let size = self.rules.count
         for match in matches {
