@@ -19,9 +19,10 @@ public class Tokenizer {
     }
     
     public enum SpecialTokens {
-        case ignored(token: AnyObject?)
+        case ignored(token: Any?)
     }
     
+    public static let defaultTokenizer: Tokenizer = Tokenizer()
     var regex: NSRegularExpression
     var rules: [Definition]
     

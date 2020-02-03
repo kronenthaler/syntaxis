@@ -3,18 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		02C3240F894F9D14DE1FB1CC /* Pods_Syntaxis_SyntaxisTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0745928059CD536485706FEA /* Pods_Syntaxis_SyntaxisTests.framework */; };
 		6283357760BBED00D7B3B2E2 /* Pods_Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 399B7E88035072A881A6D598 /* Pods_Syntaxis.framework */; };
+		C92A839623E30E8500583992 /* ParserSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A839523E30E8500583992 /* ParserSpec.swift */; };
 		C98F5D7723D9BEC2009C5447 /* Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */; };
-		C98F5D7C23D9BEC2009C5447 /* SyntaxisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D7B23D9BEC2009C5447 /* SyntaxisTests.swift */; };
 		C98F5D7E23D9BEC2009C5447 /* Syntaxis.h in Headers */ = {isa = PBXBuildFile; fileRef = C98F5D7023D9BEC2009C5447 /* Syntaxis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C98F5D8823D9C264009C5447 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8723D9C264009C5447 /* Parser.swift */; };
 		C98F5D8A23D9C55E009C5447 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8923D9C55E009C5447 /* Tokenizer.swift */; };
 		C98F5D8C23D9C9E2009C5447 /* TokenizerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */; };
+		C9EB6A5E23E46792005ADF72 /* NimbleMatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,15 +34,16 @@
 		97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.release.xcconfig"; path = "Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB7A1BE67EE03A8C9042B61F /* Pods-Syntaxis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.release.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.release.xcconfig"; sourceTree = "<group>"; };
+		C92A839523E30E8500583992 /* ParserSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserSpec.swift; sourceTree = "<group>"; };
 		C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Syntaxis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C98F5D7023D9BEC2009C5447 /* Syntaxis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Syntaxis.h; sourceTree = "<group>"; };
 		C98F5D7123D9BEC2009C5447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C98F5D7623D9BEC2009C5447 /* SyntaxisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyntaxisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C98F5D7B23D9BEC2009C5447 /* SyntaxisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxisTests.swift; sourceTree = "<group>"; };
 		C98F5D7D23D9BEC2009C5447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C98F5D8723D9C264009C5447 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		C98F5D8923D9C55E009C5447 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerSpec.swift; sourceTree = "<group>"; };
+		C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleMatchers.swift; sourceTree = "<group>"; };
 		F6D2C561345B9F14DAD8C0B1 /* Pods-Syntaxis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,7 +76,6 @@
 				AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */,
 				97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -121,9 +122,10 @@
 		C98F5D7A23D9BEC2009C5447 /* SyntaxisTests */ = {
 			isa = PBXGroup;
 			children = (
-				C98F5D7B23D9BEC2009C5447 /* SyntaxisTests.swift */,
 				C98F5D7D23D9BEC2009C5447 /* Info.plist */,
+				C92A839523E30E8500583992 /* ParserSpec.swift */,
 				C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */,
+				C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */,
 			);
 			path = SyntaxisTests;
 			sourceTree = "<group>";
@@ -315,7 +317,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C98F5D8C23D9C9E2009C5447 /* TokenizerSpec.swift in Sources */,
-				C98F5D7C23D9BEC2009C5447 /* SyntaxisTests.swift in Sources */,
+				C9EB6A5E23E46792005ADF72 /* NimbleMatchers.swift in Sources */,
+				C92A839623E30E8500583992 /* ParserSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

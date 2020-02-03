@@ -8,13 +8,14 @@
 
 import Foundation
 
+infix operator =>
 
-public class BaseParser {
-    public typealias State = (position: Int64, maxPosition: Int64)
-    public typealias ParserTuple = (value: AnyObject, state: State)
+public class Parser {
+    public typealias State = (position: Int, maxPosition: Int)
+    public typealias ParserTuple = (value: Any, state: State)
     public typealias Functor =  ([Tokenizer.Token], State) throws ->  ParserTuple
     public typealias Filter = (Tokenizer.Token) -> Bool
-    public typealias Transformation = (AnyObject) -> AnyObject
+    public typealias Transformation = (Any) -> Any
     
     public enum ParseException: Error {
         case runtimeException(_ reason: String)
@@ -22,13 +23,17 @@ public class BaseParser {
         case unexpectedTokenException(token: String, state: State)
     }
     
-    public static let defaultTokenizer: Tokenizer = Tokenizer()
-    public var name: String
+    public private(set) var name: String
     var definition: Functor?
     
-    init(functor: @escaping Functor) {
+    init() {
+        // this should be overridden in some point by the other implementations
+        name = "Parser"
+    }
+    
+    convenience init(functor: @escaping Functor) {
+        self.init()
         self.definition = functor
-        name = "Parser" // this should be overridden in some point by the other implementations
     }
     
     private func run(_ sequence: [Tokenizer.Token], state: State) throws -> ParserTuple  {
@@ -40,72 +45,127 @@ public class BaseParser {
     }
     
     // IDEA: this function could leverage generics and use that as return type.
-    public func parse(_ sequence: String, tokenizer: Tokenizer = BaseParser.defaultTokenizer) throws -> AnyObject {
+    public func parse<T: Any>(_ sequence: String, tokenizer: Tokenizer = Tokenizer.defaultTokenizer) throws -> T? {
         let tokens = tokenizer.tokenize(sequence: sequence)
-        return try self.run(tokens, state: (0, 0)).value
+        let result = try self.run(tokens, state: (0, 0))
+        return result.value as? T
     }
     
-    public func named(_ name: String) -> BaseParser {
+    public func named(_ name: String) -> Parser {
         self.name = name
         return self
     }
-    
-    static func && (left: BaseParser, right: BaseParser) throws -> BaseParser {
-        let _and: Functor = { (tokens: [Tokenizer.Token], state: State) -> ParserTuple in
+}
+
+
+// MARK: Operators
+extension Parser {
+    static func && (left: Parser, right: Parser) -> Parser {
+        let _and: Functor = { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             let tupleA = try left.run(tokens, state: state)
             let tupleB = try right.run(tokens, state: tupleA.state)
             
             return (mergeValues(tupleA.value, tupleB.value), state: tupleB.state)
         }
         
-        return BaseParser(functor: _and).named("(\(left.name) && \(right.name))")
-    }
-}
-
-
-func mergeValues(_ value1: AnyObject, _ value2: AnyObject) -> AnyObject {
-    // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
-    /**
-     
-     [f, s].compactMap { x as? Tokenizer.SpecialTokens ? nil : x } // filter the elements
-     // probably will not work the reduce part because an initial state needs to be used for the aggregation and that value is returned in the first parameter in the
-     // first call...
-     .reduce(Tokenizer.SpecialTokens.ignored(token:nil)) {
-        x, y in
-            // how to accumulate the result
-            if x is list and y is list => [x,y].flatMap($0)
-            
-     }
-     */
-    let values = [value1, value2].filter { (x: AnyObject) -> Bool in
-        x as? Tokenizer.SpecialTokens != nil
+        return Parser(functor: _and).named("(\(left.name) && \(right.name))")
     }
     
-    if values.count == 0 {
-        return Tokenizer.SpecialTokens.ignored(token: nil) as AnyObject
-    }
-
-    // single values make no sense as lists
-    if values.count == 1 {
-        return values[0]
-    }
-    
-    // the first element is a list => flatten the second parameter into the first one
-    if var firstList = values[0] as? [AnyObject] {
-        if let secondValue = values[1] as? [AnyObject] {
-            // take a look at the flatMap function as the behavior could be very similar to what we have here...
-            firstList.append(contentsOf: secondValue)
-        }else{
-            firstList.append(value2)
+    private static func mergeValues(_ value1: Any, _ value2: Any) -> Any {
+        // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
+        let values = [value1, value2].filter { (x: Any) -> Bool in
+            x as? Tokenizer.SpecialTokens == nil
         }
-        return firstList as AnyObject
+        
+        if values.count == 0 {
+            // IDEA: set the [value1, value2] as the ignored value ...
+            return Tokenizer.SpecialTokens.ignored(token: nil) as Any
+        }
+
+        // single values make no sense as lists
+        if values.count == 1 {
+            return values[0]
+        }
+        
+        // the first element is a list => flatten the second parameter into the first one
+        if let firstList = values[0] as? [Any] {
+            if let secondValue = values[1] as? [Any] {
+                return firstList + secondValue
+            }
+            
+            return firstList + [value2]
+        }
+        
+        // the first element is an atom but the second in a list, prepend the first into second
+        if let secondList = values[1] as? [Any] {
+            return [value1] + secondList
+        }
+        
+        return values
     }
     
-    // the first element is an atom but the second in a list, prepend the first into second
-    if var secondList = values[1] as? [AnyObject] {
-        secondList.insert(value1, at: 0)
-        return secondList as AnyObject
+    static func || (left: Parser, right: Parser) -> Parser {
+        let _or: Functor = { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
+            do {
+                return try left.run(tokens, state: state)
+            } catch let error as ParseException {
+                var lastState: State?
+                
+                switch (error) {
+                    case .unexpectedTokenException(token: _, state: let tempState): fallthrough
+                    case .parsingException(reason: _, state: let tempState):
+                        lastState = tempState
+                        break
+                    default:
+                        throw error
+                }
+                
+                return try right.run(tokens, state: (state.position, lastState?.maxPosition ?? state.maxPosition))
+            }
+        }
+        
+        return Parser(functor: _or).named("(\(left.name) || \(right.name))")
     }
     
-    return values as AnyObject
+    static func => (parser: Parser, transformation: @escaping Transformation) -> Parser {
+        let _transform = { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
+            let result = try parser.run(tokens, state: state)
+            return (value: transformation(result.value), state: result.state)
+        }
+        return Parser(functor: _transform).named(parser.name)
+    }
 }
+
+// this is the bread and butter
+func token(_ target: String) -> Parser {
+    return some { $0.value == target }.named("token(\(target))")
+}
+
+func pure(_ value: Any) -> Parser {
+    let _pure: Parser.Functor = { (value, $1) }
+    
+    return Parser(functor: _pure).named("pure(\(String(describing: value)))")
+}
+
+func some(_ lambda: @escaping Parser.Filter) -> Parser {
+    let _some: Parser.Functor = { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
+        guard state.position < tokens.count else {
+            throw Parser.ParseException.parsingException(reason: "No tokens left in the stream", state: state)
+        }
+        
+        let token = tokens[state.position]
+        if lambda(token) {
+            let position = state.position + 1
+            return (value: token.value,
+                    state: (position: position, maxPosition: max(position, state.maxPosition)))
+        }
+        throw Parser.ParseException.unexpectedTokenException(token: token.value, state: state)
+    }
+    
+    return Parser(functor: _some).named("some")
+}
+
+func skip(_ parser: Parser) -> Parser {
+    return (parser => { Tokenizer.SpecialTokens.ignored(token: $0) }).named("skip(\(parser.name))")
+}
+
