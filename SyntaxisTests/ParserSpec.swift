@@ -276,4 +276,20 @@ class ParserSpec: XCTestCase {
         
         expect(result) == "Hello"
     }
+    
+    func testEOFBeforeEOF() {
+        let parser = token("hello") && eof()
+        
+        expect {
+            try parser.parse("hello John", tokenizer: self.wordTokenizer) as String?
+        }.to(throwParsingError("Unexpected EOF"))
+    }
+    
+    func testEOFAtEOF() {
+        let parser = token("hello") && eof()
+        
+        let result = try! parser.parse("hello   ", tokenizer: self.wordTokenizer) as String?
+        
+        expect(result) == "hello"
+    }
 }

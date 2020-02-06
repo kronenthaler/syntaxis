@@ -8,10 +8,9 @@
 
 import Foundation
 
-infix operator =>
-postfix operator *
-postfix operator +
-//postfix operator .| // EOF
+infix operator =>   // transform
+postfix operator *  // zero or more (many)
+postfix operator +  // one or more (one plus)
 
 
 public class Parser {
@@ -139,8 +138,8 @@ extension Parser {
     
     static func => (parser: Parser, transformation: @escaping Transformation) -> Parser {
         return Parser() { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
-            let result = try parser.run(tokens, state: state)
-            return (value: transformation(result.value), state: result.state)
+            let (value, newState) = try parser.run(tokens, state: state)
+            return (value: transformation(value), state: newState)
         }
         .named(parser.debugDescription)
     }
@@ -170,8 +169,6 @@ extension Parser {
         return (parser && (parser)*)
             .named("(\(parser.debugDescription))+")
     }
-    
-    // eof postfix .|
 }
 
 // this is the bread and butter
@@ -203,7 +200,8 @@ func some(_ lambda: @escaping Parser.Filter) -> Parser {
 }
 
 func skip(_ parser: Parser) -> Parser {
-    return (parser => { Tokenizer.SpecialTokens.ignored(token: $0) }).named("skip(\(parser.debugDescription))")
+    return (parser => { Tokenizer.SpecialTokens.ignored(token: $0) })
+        .named("skip(\(parser.debugDescription))")
 }
 
 func maybe(_ parser: Parser) -> Parser {
@@ -211,3 +209,13 @@ func maybe(_ parser: Parser) -> Parser {
         .named("[\(parser.debugDescription)]")
 }
 
+func eof() -> Parser {
+    return Parser() { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
+        if state.position == tokens.count {
+            return (Tokenizer.SpecialTokens.ignored(token: "EOF"), state)
+        }
+        
+        throw Parser.ParseException.parsingException(reason: "Unexpected EOF", state: state)
+    }
+    .named("<EOF>")
+}

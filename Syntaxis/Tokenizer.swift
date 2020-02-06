@@ -11,7 +11,7 @@ import Foundation
 public protocol TokenType {}
 
 public class Tokenizer {
-    public typealias Token = (value: String, type: TokenType)
+    public typealias Token = (value: String, type: TokenType, range: NSRange)
     public typealias Definition = (index: Int, type: TokenType)
     
     private enum DefaultTokenType: Int, TokenType {
@@ -50,7 +50,7 @@ public class Tokenizer {
                 }
                 
                 let range: NSRange = match.range(at: definition)
-                tokens.append((value: fasterSequence.substring(with: range), type: self.rules[i].type))
+                tokens.append((value: fasterSequence.substring(with: range), type: self.rules[i].type, range: range))
             }
         }
         
