@@ -220,4 +220,60 @@ class ParserSpec: XCTestCase {
             try parser.parse("howdy John", tokenizer: self.wordTokenizer) as String?
         }.to(throwUnexpectedTokenError("howdy", state: (0, 0)))
     }
+    
+    func testManyNoMatches() {
+        let parser = (token("a"))*
+        
+        let result = try! parser.parse("bbbbb") as [String]?
+        
+        expect(result) == []
+    }
+    
+    func testManyFewMatches() {
+        let parser = (token("a"))*
+        
+        let result = try! parser.parse("aaaab") as [String]?
+        
+        expect(result) == ["a" ,"a", "a", "a"]
+    }
+    
+    func testManyAllMatches() {
+        let parser = (token("a"))*
+        
+        let result = try! parser.parse("aaaa") as [String]?
+        
+        expect(result) == ["a" ,"a", "a", "a"]
+    }
+    
+    func testOnePlusNoMatches() {
+        let parser = (token("a"))+
+        
+        expect {
+            try parser.parse("baaa") as [String]?
+        }.to(throwUnexpectedTokenError("b"))
+    }
+    
+    func testOnePlusManyMatches() {
+        let parser = (token("a"))+
+        
+        let result = try! parser.parse("aaaa") as [String]?
+        
+        expect(result) == ["a", "a", "a", "a"]
+    }
+    
+    func testMaybeNoMatch() {
+        let parser = maybe(token("Hi"))
+        
+        let result = try! parser.parse("Hello John", tokenizer: self.wordTokenizer) as Tokenizer.SpecialTokens?
+        
+        expect(result).to(matchIgnoredToken(nil as String?))
+    }
+    
+    func testMaybeMatch() {
+        let parser = maybe(token("Hello"))
+        
+        let result = try! parser.parse("Hello John", tokenizer: self.wordTokenizer) as String?
+        
+        expect(result) == "Hello"
+    }
 }
