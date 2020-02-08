@@ -10,6 +10,9 @@
 		02C3240F894F9D14DE1FB1CC /* Pods_Syntaxis_SyntaxisTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0745928059CD536485706FEA /* Pods_Syntaxis_SyntaxisTests.framework */; };
 		6283357760BBED00D7B3B2E2 /* Pods_Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 399B7E88035072A881A6D598 /* Pods_Syntaxis.framework */; };
 		C92A839623E30E8500583992 /* ParserSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A839523E30E8500583992 /* ParserSpec.swift */; };
+		C95745F223EEF63700FE753A /* Parser+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F123EEF63700FE753A /* Parser+Operators.swift */; };
+		C95745F423EEF66E00FE753A /* Parser+Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F323EEF66E00FE753A /* Parser+Combinators.swift */; };
+		C95745F623EEF73D00FE753A /* Parser+Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F523EEF73D00FE753A /* Parser+Exception.swift */; };
 		C98F5D7723D9BEC2009C5447 /* Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */; };
 		C98F5D7E23D9BEC2009C5447 /* Syntaxis.h in Headers */ = {isa = PBXBuildFile; fileRef = C98F5D7023D9BEC2009C5447 /* Syntaxis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C98F5D8823D9C264009C5447 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8723D9C264009C5447 /* Parser.swift */; };
@@ -35,6 +38,9 @@
 		AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB7A1BE67EE03A8C9042B61F /* Pods-Syntaxis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.release.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.release.xcconfig"; sourceTree = "<group>"; };
 		C92A839523E30E8500583992 /* ParserSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserSpec.swift; sourceTree = "<group>"; };
+		C95745F123EEF63700FE753A /* Parser+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Operators.swift"; sourceTree = "<group>"; };
+		C95745F323EEF66E00FE753A /* Parser+Combinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Combinators.swift"; sourceTree = "<group>"; };
+		C95745F523EEF73D00FE753A /* Parser+Exception.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Exception.swift"; sourceTree = "<group>"; };
 		C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Syntaxis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C98F5D7023D9BEC2009C5447 /* Syntaxis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Syntaxis.h; sourceTree = "<group>"; };
 		C98F5D7123D9BEC2009C5447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -111,9 +117,12 @@
 		C98F5D6F23D9BEC2009C5447 /* Syntaxis */ = {
 			isa = PBXGroup;
 			children = (
-				C98F5D7023D9BEC2009C5447 /* Syntaxis.h */,
 				C98F5D7123D9BEC2009C5447 /* Info.plist */,
 				C98F5D8723D9C264009C5447 /* Parser.swift */,
+				C95745F323EEF66E00FE753A /* Parser+Combinators.swift */,
+				C95745F523EEF73D00FE753A /* Parser+Exception.swift */,
+				C95745F123EEF63700FE753A /* Parser+Operators.swift */,
+				C98F5D7023D9BEC2009C5447 /* Syntaxis.h */,
 				C98F5D8923D9C55E009C5447 /* Tokenizer.swift */,
 			);
 			path = Syntaxis;
@@ -307,8 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95745F623EEF73D00FE753A /* Parser+Exception.swift in Sources */,
+				C95745F423EEF66E00FE753A /* Parser+Combinators.swift in Sources */,
 				C98F5D8823D9C264009C5447 /* Parser.swift in Sources */,
 				C98F5D8A23D9C55E009C5447 /* Tokenizer.swift in Sources */,
+				C95745F223EEF63700FE753A /* Parser+Operators.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

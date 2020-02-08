@@ -10,33 +10,6 @@ import Foundation
 import Nimble
 @testable import Syntaxis
 
-func throwUnexpectedTokenError(_ expected: String, state expectedState: Parser.State? = nil) -> Predicate<Any> {
-    return throwError(closure: { (error: Parser.ParseException) in
-        if case let .unexpectedTokenException(token: token, state: state) = error {
-            expect(token) == expected
-            if let expectedState = expectedState {
-                expect(state.position) == expectedState.position
-                expect(state.maxPosition) == expectedState.maxPosition
-            }
-            return
-        }
-        fail("Unexpected error received")
-    })
-}
-
-func throwParsingError(_ expected: String, state expectedState: Parser.State? = nil) -> Predicate<Any> {
-    return throwError(closure: { (error: Parser.ParseException) in
-        if case let .parsingException(reason: reason, state: state) = error{
-            expect(reason) == expected
-            if let expectedState = expectedState {
-                expect(state.position) == expectedState.position
-                expect(state.maxPosition) == expectedState.maxPosition
-            }
-            return
-        }
-        fail("Unexpected error received")
-    })
-}
 
 func matchIgnoredToken<T: Equatable>(_ expected: T?) -> Predicate<Any> {
     return Predicate.define("equal <ignored(token:\(String(describing: expected)))>", matcher: { expression, message -> PredicateResult in

@@ -16,15 +16,20 @@ public class Tokenizer {
     
     private enum DefaultTokenType: Int, TokenType {
         case character = 1
+        case word
     }
     
     public enum SpecialTokens {
         case ignored(token: Any?)
     }
     
+    // basic tokenizers (per char, per word)
     public static let defaultTokenizer: Tokenizer = Tokenizer()
-    var regex: NSRegularExpression
-    var rules: [Definition]
+    public static let wordTokenizer: Tokenizer = try! Tokenizer(expression: "(\\S+)", rules: [(index: 1, type: DefaultTokenType.word)])
+    
+    // data
+    private var regex: NSRegularExpression
+    private var rules: [Definition]
     
     convenience init() {
         try! self.init(expression: "(.)", rules: [(index:1, type: DefaultTokenType.character)])

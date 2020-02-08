@@ -34,68 +34,68 @@ class ParserSpec: XCTestCase {
         
         expect {
             try parser.parse("")
-        }.to(throwError(Parser.ParseException.runtimeException("Undefined parser function")))
+        }.to(throwError(Parser.Exception.RuntimeException(reason: "Undefined parser function")))
     }
     
     func testTokenNotFound() {
         let parser = token("hello")
-        
+
         expect {
-            try parser.parse("hi John", tokenizer: self.wordTokenizer)
-        }.to(throwUnexpectedTokenError("hi"))
+            try parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer)
+        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "hi", state: (0,0))))
     }
-    
+
     func testTokenFound() throws {
         let parser = token("hello")
-        let result: String? = try parser.parse("hello John", tokenizer: self.wordTokenizer)
+        let result: String? = try parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer)
         expect(result) == "hello"
     }
-    
+
     func testNoTokensLeft() {
         let parser = token("hello")
-        
+
         expect{
             try parser.parse("") as String?
-        }.to(throwParsingError("No tokens left in the stream", state: (0, 0)))
+        }.to(throwError(Parser.Exception.ParsingException(reason: "No tokens left in the stream", state: (0, 0))))
     }
-    
+
     func testSkipParser() {
         let parser = skip(token("hello"))
-        
-        let result: Tokenizer.SpecialTokens? = try? parser.parse("hello John", tokenizer: self.wordTokenizer)
-        
+
+        let result: Tokenizer.SpecialTokens? = try? parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer)
+
         expect(result).to(matchIgnoredToken("hello"))
     }
-    
+
     func testAndFailingFirstParser() {
         let parserA = token("hello")
         let parserB = token("John")
-        
+
         let parser = parserA && parserB
-        
+
         expect {
-            try parser.parse("hi John", tokenizer: self.wordTokenizer) as String?
-        }.to(throwUnexpectedTokenError("hi"))
+            try parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer) as String?
+        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "hi")))
     }
-    
+
     func testAndFailingSecondParser() {
         let parserA = token("hello")
         let parserB = token("John")
-        
+
         let parser = parserA && parserB
-        
+
         expect {
-            try parser.parse("hello Mike", tokenizer: self.wordTokenizer) as String?
-        }.to(throwUnexpectedTokenError("Mike"))
+            try parser.parse("hello Mike", tokenizer: Tokenizer.wordTokenizer) as String?
+        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "Mike")))
     }
-    
+
     func testAndSuccessIgnoredIgnored() {
         let parserA = skip(token("hello"))
         let parserB = skip(token("John"))
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John", tokenizer: self.wordTokenizer) as Tokenizer.SpecialTokens?
+        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as Tokenizer.SpecialTokens?
         
         expect(result).to(matchIgnoredToken(nil as String?))
     }
@@ -106,7 +106,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "John"
     }
@@ -117,7 +117,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John Doe", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["John", "Doe"]
     }
@@ -128,7 +128,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "hello"
     }
@@ -139,7 +139,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["hello", "John"]
     }
@@ -150,7 +150,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John Doe", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["hello", "John", "Doe"]
     }
@@ -161,7 +161,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John Doe", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["hello", "John"]
     }
@@ -172,7 +172,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John Doe", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["hello", "John", "Doe"]
     }
@@ -183,7 +183,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA && parserB
         
-        let result = try! parser.parse("hello John long time", tokenizer: self.wordTokenizer) as [String]?
+        let result = try! parser.parse("hello John long time", tokenizer: Tokenizer.wordTokenizer) as [String]?
         
         expect(result) == ["hello", "John", "long", "time"]
     }
@@ -194,7 +194,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA || parserB
         
-        let result = try! parser.parse("hello John", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "hello"
     }
@@ -205,7 +205,7 @@ class ParserSpec: XCTestCase {
         
         let parser = parserA || parserB
         
-        let result = try! parser.parse("hi John", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "hi"
     }
@@ -213,12 +213,12 @@ class ParserSpec: XCTestCase {
     func testOrBothFailed() {
         let parserA = token("hello")
         let parserB = token("hi")
-        
+
         let parser = parserA || parserB
-        
+
         expect {
-            try parser.parse("howdy John", tokenizer: self.wordTokenizer) as String?
-        }.to(throwUnexpectedTokenError("howdy", state: (0, 0)))
+            try parser.parse("howdy John", tokenizer: Tokenizer.wordTokenizer) as String?
+        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "howdy", state: (0, 0))))
     }
     
     func testManyNoMatches() {
@@ -247,12 +247,12 @@ class ParserSpec: XCTestCase {
     
     func testOnePlusNoMatches() {
         let parser = (token("a"))+
-        
+
         expect {
             try parser.parse("baaa") as [String]?
-        }.to(throwUnexpectedTokenError("b"))
+        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "b")))
     }
-    
+
     func testOnePlusManyMatches() {
         let parser = (token("a"))+
         
@@ -264,7 +264,7 @@ class ParserSpec: XCTestCase {
     func testMaybeNoMatch() {
         let parser = maybe(token("Hi"))
         
-        let result = try! parser.parse("Hello John", tokenizer: self.wordTokenizer) as Tokenizer.SpecialTokens?
+        let result = try! parser.parse("Hello John", tokenizer: Tokenizer.wordTokenizer) as Tokenizer.SpecialTokens?
         
         expect(result).to(matchIgnoredToken(nil as String?))
     }
@@ -272,23 +272,23 @@ class ParserSpec: XCTestCase {
     func testMaybeMatch() {
         let parser = maybe(token("Hello"))
         
-        let result = try! parser.parse("Hello John", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("Hello John", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "Hello"
     }
     
     func testEOFBeforeEOF() {
         let parser = token("hello") && eof()
-        
+
         expect {
-            try parser.parse("hello John", tokenizer: self.wordTokenizer) as String?
-        }.to(throwParsingError("Unexpected EOF"))
+            try parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
+        }.to(throwError(Parser.Exception.ParsingException(reason: "Unexpected EOF")))
     }
     
     func testEOFAtEOF() {
         let parser = token("hello") && eof()
         
-        let result = try! parser.parse("hello   ", tokenizer: self.wordTokenizer) as String?
+        let result = try! parser.parse("hello   ", tokenizer: Tokenizer.wordTokenizer) as String?
         
         expect(result) == "hello"
     }
