@@ -21,6 +21,26 @@ extension Parser {
         }
         
         public class ParsingException: Exception {
+            public func errorMessage(context: String, tokens: [Tokenizer.Token]) -> String {
+                guard let state = self.state else { return "" }
+                
+                // find infracting token based on the state
+                let token: Tokenizer.Token = tokens[state.position]
+                
+                // count how many newlines there are between 0-token.range.location
+                // add some buffer after the token starting position for pretty printing purposes
+                let prefixIndex = context.index(context.startIndex, offsetBy: token.range.upperBound + min(20, context.count - token.range.upperBound))
+                let prefix = context[..<prefixIndex]
+                let lines = prefix.components(separatedBy: CharacterSet(charactersIn: "\n\r"))
+                let lastline = lines.last { $0 == token.value }
+                
+                let surroundingIndex = context.index(context.startIndex, offsetBy: token.range.lowerBound - max(0, 20-token.range.lowerBound))
+                let target = context[surroundingIndex..<prefixIndex]
+                
+                
+                var message = "\(target)\n\("^")\nError found at line: \(lines.count) character: \(0)"
+                return message
+            }
             
             public private(set) var state: State?
             
