@@ -292,4 +292,18 @@ class ParserSpec: XCTestCase {
         
         expect(result) == "hello"
     }
+    
+    func testExpectionErrorMessageInMultilines() {
+        let parser = token("hello") && token("Mike") && token(":")
+        let context = "hello    \n      \n     \n     \n     Mike , < 20 chars after."
+        do {
+            let _ = try parser.parse(context, tokenizer:  Tokenizer.wordTokenizer) as String?
+        } catch let error as Parser.Exception.ParsingException {
+            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
+            let message = error.errorMessage(context: context, tokens: tokens)
+            expect(message) == "     Mike , < 20 chars after.\n~~~~~~~~~~^\nError: Unexpected token (,) found. At line: 5 character: 11"
+        } catch {
+            fail()
+        }
+    }
 }
