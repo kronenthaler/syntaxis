@@ -23,45 +23,65 @@ extension Parser {
         public class ParsingException: Exception {
             public func errorMessage(context: String, tokens: [Tokenizer.Token]) -> String {
                 guard let state = self.state else { return "" }
+                let source = context as NSString
                 
-                // find infracting token based on the state
-                let token: Tokenizer.Token = tokens[state.position]
+                // TODO: change the usage of token for the indexes for the EOF case.
+                // find infracting token based on the state || EOF
+                var lowerBound = context.count - 1
+                var upperBound = context.count
+                
+                if state.position < tokens.count {
+                    let token: Tokenizer.Token = tokens[state.position]
+                    lowerBound = token.range.lowerBound
+                    upperBound = token.range.upperBound
+                }
                 
                 // count how many newlines there are between 0-token.range.location
-                let prefixIndex = context.index(context.startIndex, offsetBy: token.range.lowerBound + 1)
+                let prefixIndex = context.index(context.startIndex, offsetBy: lowerBound + 1)
                 let prefix = context[..<prefixIndex]
                 let lines = prefix.components(separatedBy: CharacterSet(charactersIn: "\n\r"))
                 
                 // the amount of characters in the last line is the position of the first bad token.
                 let lastLine = lines.last!
+                let characterPosition = state.position < tokens.count ? lastLine.count : context.count + 1
                 
-                // lowerbound should the either (0: beginning of str, -20: if no \n, -x: x the index of the first \n going backwards from the lowerbound)
-                // delta:                           lowerbound,            +20,          +x
-                // shift(delta) + ^
-                // max(0, token.range.location - 20)
-                var shift = token.range.lowerBound
-                var offset = 0
-                if token.range.location - 20 > 0 {
-                    offset = token.range.location - 20
+                // find the lower bound, max(0, lowerBound - 20, indexOf(\n))
+                var shift = lowerBound
+                var lowerOffset = 0
+                if lowerBound - 20 > 0 {
+                    lowerOffset = lowerBound - 20
                     shift = 20
                 }
-                
-                // TODO: check if it's possible to search backwards in one instruction
-                for i in stride(from: token.range.lowerBound, to: offset, by: -1){
+            
+                for i in stride(from: lowerBound, to: lowerOffset, by: -1) {
+                    // check that the offset is not going out of bounds...
                     let charAt = context[context.index(context.startIndex, offsetBy:i)]
                     if(charAt == Character("\n")){
-                        offset = i + 1
-                        shift = token.range.lowerBound - i - 1
+                        lowerOffset = i + 1
+                        shift = lowerBound - i - 1
                         break
                     }
                 }
                 
-                let lowerBoundIndex = context.index(context.startIndex, offsetBy: offset)
-                let upperBoundIndex = context.index(context.startIndex, offsetBy: token.range.upperBound + min(20, context.count - token.range.upperBound))
+                // calculate upper bound clipping in the first new line character found.
+                let topRange = NSMakeRange(upperBound, min(20, context.count - upperBound))
+                let upperRange = source.range(of: "\n", options: .caseInsensitive, range: topRange)
+                var upperOffset = topRange.upperBound
+                if upperRange.location != NSNotFound {
+                    upperOffset = upperRange.upperBound - 1
+                }
+                
+                // get the substring
+                let lowerBoundIndex = context.index(context.startIndex, offsetBy: lowerOffset)
+                let upperBoundIndex = context.index(context.startIndex, offsetBy: upperOffset)
                 let target = context[lowerBoundIndex..<upperBoundIndex]
                 
                 // construct the message to output
-                return "\(target)\n\(String(repeating:"~", count: shift) + "^")\nError: \(self.reason!) At line: \(lines.count) character: \(lastLine.count)"
+                return """
+                       \(target)
+                       \(String(repeating:" ", count: max(0, shift)) + "⤴")
+                       Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
+                       """
             }
             
             public private(set) var state: State?
