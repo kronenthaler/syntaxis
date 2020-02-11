@@ -44,7 +44,7 @@ public class Parser {
             let result = try self.run(tokens, state: (0, 0))
             return result.value as? T
         } catch let error as Exception.ParsingException {
-            print("ERROR:\n\(error.errorMessage(context: sequence, tokens: tokens))")
+            print(error.errorMessage(context: sequence, tokens: tokens))
             throw error
         }
     }

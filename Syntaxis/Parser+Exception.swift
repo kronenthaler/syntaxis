@@ -78,9 +78,9 @@ extension Parser {
 
                 // construct the message to output
                 return """
+                Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
                 \(target)
                 \(String(repeating: " ", count: max(0, shift)) + "⤴")
-                Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
                 """
             }
 
