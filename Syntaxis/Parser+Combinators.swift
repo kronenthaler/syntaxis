@@ -14,12 +14,11 @@ func token(_ target: String) -> Parser {
 }
 
 func pure(_ value: Any) -> Parser {
-    return Parser() { (value, $1) }
-        .named("pure(\(String(describing: value)))")
+    return Parser("pure(\(String(describing: value)))") { (value, $1) }
 }
 
 func some(_ lambda: @escaping Parser.Filter) -> Parser {
-    return Parser() { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
+    return Parser("filter()") { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
         guard state.position < tokens.count else {
             throw Parser.Exception.ParsingException(reason: "Unexpected EOF.", state: state)
         }
@@ -32,7 +31,6 @@ func some(_ lambda: @escaping Parser.Filter) -> Parser {
         }
         throw Parser.Exception.UnexpectedTokenException(token: token.value, state: state)
     }
-    .named("some")
 }
 
 func skip(_ parser: Parser) -> Parser {
@@ -46,12 +44,11 @@ func maybe(_ parser: Parser) -> Parser {
 }
 
 func eof() -> Parser {
-    return Parser() { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
+    return Parser("<EOF>") { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
         if state.position == tokens.count {
             return (Tokenizer.SpecialTokens.ignored(token: "EOF"), state)
         }
         
         throw Parser.Exception.ParsingException(reason: "Expected EOF but there are still tokens to process.", state: state)
     }
-    .named("<EOF>")
 }

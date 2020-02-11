@@ -19,13 +19,13 @@ public class Parser {
     private var name: String
     var definition: Functor?
     
-    init() {
+    init(_ name: String = "parser()") {
         // this should be overridden in some point by the other implementations
-        name = "Parser"
+        self.name = name
     }
     
-    convenience init(_ functor: @escaping Functor) {
-        self.init()
+    convenience init(_ name: String = "parser(){", _ functor: @escaping Functor) {
+        self.init(name)
         self.definition = functor
     }
         
