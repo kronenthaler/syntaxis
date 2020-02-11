@@ -22,7 +22,7 @@ func some(_ lambda: @escaping Parser.Filter) -> Parser {
         guard state.position < tokens.count else {
             throw Parser.Exception.ParsingException(reason: "Unexpected EOF.", state: state)
         }
-        
+
         let token = tokens[state.position]
         if lambda(token) {
             let position = state.position + 1
@@ -48,7 +48,7 @@ func eof() -> Parser {
         if state.position == tokens.count {
             return (Tokenizer.SpecialTokens.ignored(token: "EOF"), state)
         }
-        
+
         throw Parser.Exception.ParsingException(reason: "Expected EOF but there are still tokens to process.", state: state)
     }
 }

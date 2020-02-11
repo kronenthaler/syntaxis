@@ -12,23 +12,22 @@ infix operator =>   // transform
 postfix operator *  // zero or more (many)
 postfix operator +  // one or more (one plus)
 
-
 extension Parser {
     static func && (left: Parser, right: Parser) -> Parser {
         return Parser("(\(left.debugDescription) && \(right.debugDescription))") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             let tupleA = try left.run(tokens, state: state)
             let tupleB = try right.run(tokens, state: tupleA.state)
-            
+
             return (mergeValues(tupleA.value, tupleB.value), state: tupleB.state)
         }
     }
-    
+
     private static func mergeValues(_ value1: Any, _ value2: Any) -> Any {
         // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
         let values = [value1, value2].filter { (x: Any) -> Bool in
             x as? Tokenizer.SpecialTokens == nil
         }
-        
+
         if values.count == 0 {
             return Tokenizer.SpecialTokens.ignored(token: nil) as Any
         }
@@ -37,24 +36,24 @@ extension Parser {
         if values.count == 1 {
             return values[0]
         }
-        
+
         // the first element is a list => flatten the second parameter into the first one
         if let firstList = value1 as? [Any] {
             if let secondValue = value2 as? [Any] {
                 return firstList + secondValue
             }
-            
+
             return firstList + [value2]
         }
-        
+
         // the first element is an atom but the second in a list, prepend the first into second
         if let secondList = value2 as? [Any] {
             return [value1] + secondList
         }
-        
+
         return values
     }
-    
+
     static func || (left: Parser, right: Parser) -> Parser {
         return Parser("(\(left.debugDescription) || \(right.debugDescription))") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             do {
@@ -64,14 +63,14 @@ extension Parser {
             }
         }
     }
-    
+
     static func => (parser: Parser, transformation: @escaping Transformation) -> Parser {
         return Parser(parser.debugDescription) { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             let (value, newState) = try parser.run(tokens, state: state)
             return (value: transformation(value), state: newState)
         }
     }
-    
+
     static postfix func * (parser: Parser) -> Parser {
         return Parser("(\(parser.debugDescription))*") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             var result: [Any] = []
@@ -87,7 +86,7 @@ extension Parser {
             }
         }
     }
-    
+
     static postfix func + (parser: Parser) -> Parser {
         return (parser && (parser)*)
             .named("(\(parser.debugDescription))+")
