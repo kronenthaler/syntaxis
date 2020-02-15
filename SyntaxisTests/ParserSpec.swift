@@ -376,7 +376,7 @@ class ParserSpec: XCTestCase {
         let parser = token("hello") && token("Mike") && eof()
         let context = "hello                            Mike , "
 
-        let _ = try? parser.parse(context, options: [.verboseError], tokenizer: Tokenizer.wordTokenizer) as String?
+        _ = try? parser.parse(context, options: [.verboseError], tokenizer: Tokenizer.wordTokenizer) as String?
 
         let buffer = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 0)
         let count = read(pipe.fileHandleForReading.fileDescriptor, buffer, 1024)
@@ -395,7 +395,7 @@ class ParserSpec: XCTestCase {
         let parser = token("hello") && token("Mike") && eof()
         let context = "hello Mike"
 
-        let _ = try? parser.parse(context, options: [.printParser], tokenizer: Tokenizer.wordTokenizer) as String?
+        _ = try? parser.parse(context, options: [.printParser], tokenizer: Tokenizer.wordTokenizer) as String?
 
         let buffer = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 0)
         let count = read(pipe.fileHandleForReading.fileDescriptor, buffer, 1024)
