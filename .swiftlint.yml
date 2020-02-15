@@ -1,0 +1,9 @@
+reporter: "xcode"
+line_length:
+  warning: 130
+  error: 140
+  ignores_comments: true
+  ignores_urls: true
+  ignores_function_declarations: true
+  ### works up until this config rule
+  ignores_interpolated_strings: true

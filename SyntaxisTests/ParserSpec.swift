@@ -12,29 +12,13 @@ import XCTest
 @testable import Syntaxis
 
 class ParserSpec: XCTestCase {
-    enum types: Int, TokenType {
-        case word = 1
-    }
-    var wordTokenizer: Tokenizer {
-        get {
-            try! Tokenizer(expression: "(\\S+)", rules: [(index: 1, type: types.word)])
-        }
-    }
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
 
     func testRunShouldFailIfNoDefinition() {
         let parser = Parser()
 
         expect {
             try parser.parse("")
-        }.to(throwError(Parser.Exception.RuntimeException(reason: "Undefined parser function")))
+        }.to(throwError(Parser.RuntimeException(reason: "Undefined parser function")))
     }
 
     func testTokenNotFound() {
@@ -42,7 +26,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer)
-        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "hi", state: (0, 0))))
+        }.to(throwError(Parser.UnexpectedTokenException(token: "hi", state: (0, 0))))
     }
 
     func testTokenFound() throws {
@@ -56,7 +40,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("") as String?
-        }.to(throwError(Parser.Exception.ParsingException(reason: "Unexpected EOF.", state: (0, 0))))
+        }.to(throwError(Parser.ParsingException(reason: "Unexpected EOF.", state: (0, 0))))
     }
 
     func testSkipParser() {
@@ -75,7 +59,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer) as String?
-        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "hi")))
+        }.to(throwError(Parser.UnexpectedTokenException(token: "hi")))
     }
 
     func testAndFailingSecondParser() {
@@ -86,7 +70,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("hello Mike", tokenizer: Tokenizer.wordTokenizer) as String?
-        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "Mike")))
+        }.to(throwError(Parser.UnexpectedTokenException(token: "Mike")))
     }
 
     func testAndSuccessIgnoredIgnored() {
@@ -218,7 +202,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("howdy John", tokenizer: Tokenizer.wordTokenizer) as String?
-        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "howdy", state: (0, 0))))
+        }.to(throwError(Parser.UnexpectedTokenException(token: "howdy", state: (0, 0))))
     }
 
     func testManyNoMatches() {
@@ -250,7 +234,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("baaa") as [String]?
-        }.to(throwError(Parser.Exception.UnexpectedTokenException(token: "b")))
+        }.to(throwError(Parser.UnexpectedTokenException(token: "b")))
     }
 
     func testOnePlusManyMatches() {
@@ -282,7 +266,7 @@ class ParserSpec: XCTestCase {
 
         expect {
             try parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
-        }.to(throwError(Parser.Exception.ParsingException(reason: "Unexpected EOF")))
+        }.to(throwError(Parser.ParsingException(reason: "Unexpected EOF")))
     }
 
     func testEOFAtEOF() {
@@ -298,7 +282,7 @@ class ParserSpec: XCTestCase {
         let context = "hello    \n      \n     \n     \n     Mike , < 20 chars after."
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Unexpected token (,) found. At line: 5 character: 11\n     Mike , < 20 chars after.\n          ⤴"
@@ -312,7 +296,7 @@ class ParserSpec: XCTestCase {
         let context = "hello                            Mike , < 20 chars after."
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Unexpected token (,) found. At line: 1 character: 39\n               Mike , < 20 chars after.\n                    ⤴"
@@ -326,7 +310,7 @@ class ParserSpec: XCTestCase {
         let context = "hello                            Mike , < 20 chars after."
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Unexpected token (hello) found. At line: 1 character: 1\nhello                    \n⤴"
@@ -340,7 +324,7 @@ class ParserSpec: XCTestCase {
         let context = "hello                            Mike ,\n < 20 chars after."
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Unexpected token (,) found. At line: 1 character: 39\n               Mike ,\n                    ⤴"
@@ -354,7 +338,7 @@ class ParserSpec: XCTestCase {
         let context = "hello                            Mike"
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Unexpected EOF. At line: 1 character: 38\n                 Mike\n                    ⤴"
@@ -368,12 +352,58 @@ class ParserSpec: XCTestCase {
         let context = "hello                            Mike , "
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.Exception.ParsingException {
+        } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
             expect(message) == "Error: Expected EOF but there are still tokens to process. At line: 1 character: 39\n               Mike , \n                    ⤴"
         } catch {
             fail()
         }
+    }
+
+    private func ptrToString (pointer buf: UnsafeMutableRawPointer, length: Int) -> String {
+        let filteredArray = Array(UnsafeBufferPointer(start: buf.assumingMemoryBound(to: UInt8.self), count: length))
+        return filteredArray
+            .map { String(UnicodeScalar(UInt8($0))) }
+            .joined()
+            .components(separatedBy: "\n")[0]
+    }
+
+    func testParserOptionsVerboseError() {
+        let pipe = Pipe()
+        dup2(pipe.fileHandleForWriting.fileDescriptor, fileno(stdout))
+
+        let parser = token("hello") && token("Mike") && eof()
+        let context = "hello                            Mike , "
+
+        let _ = try? parser.parse(context, options: [.verboseError], tokenizer: Tokenizer.wordTokenizer) as String?
+
+        let buffer = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 0)
+        let count = read(pipe.fileHandleForReading.fileDescriptor, buffer, 1024)
+        let output = ptrToString(pointer: buffer, length: count)
+        close(pipe.fileHandleForWriting.fileDescriptor)
+        close(pipe.fileHandleForReading.fileDescriptor)
+        free(buffer)
+
+        expect(output) == "Error: Expected EOF but there are still tokens to process. At line: 1 character: 39"
+    }
+
+    func testParserOptionsPrintParser() {
+        let pipe = Pipe()
+        dup2(pipe.fileHandleForWriting.fileDescriptor, fileno(stdout))
+
+        let parser = token("hello") && token("Mike") && eof()
+        let context = "hello Mike"
+
+        let _ = try? parser.parse(context, options: [.printParser], tokenizer: Tokenizer.wordTokenizer) as String?
+
+        let buffer = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 0)
+        let count = read(pipe.fileHandleForReading.fileDescriptor, buffer, 1024)
+        let output = ptrToString(pointer: buffer, length: count)
+        close(pipe.fileHandleForWriting.fileDescriptor)
+        close(pipe.fileHandleForReading.fileDescriptor)
+        free(buffer)
+
+        expect(output) == "((\"hello\" && \"Mike\") && <EOF>)"
     }
 }

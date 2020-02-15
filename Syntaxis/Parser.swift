@@ -15,6 +15,22 @@ public class Parser {
     public typealias Filter = (Tokenizer.Token) -> Bool
     public typealias Transformation = (Any) -> Any
 
+    public struct Options: OptionSet {
+        public let rawValue: Int
+        public init(rawValue: Int) { self.rawValue = rawValue }
+
+        /// print a detailed message about the location of the syntactic error
+        static let verboseError = Options(rawValue: 1)
+
+        /// print the parser representation before to the execution
+        static let printParser = Options(rawValue: 1 << 1)
+
+        /// alias of printParser + verboseError
+        static let verbose: Options = [.verboseError, .printParser]
+
+        // TO-DO: more options for formatting the error unicode/plain, colors/no-colors, stdout/stderr
+    }
+
     private var name: String
     var definition: Functor?
 
@@ -30,7 +46,7 @@ public class Parser {
 
     internal func run(_ sequence: [Tokenizer.Token], state: State) throws -> ParserTuple {
         guard let functor: Functor = self.definition else {
-            throw Exception.RuntimeException(reason: "Undefined parser function")
+            throw RuntimeException(reason: "Undefined parser function")
         }
 
         return try functor(sequence, state)
@@ -38,13 +54,20 @@ public class Parser {
 
     // IDEA: the capture of the exception should resolve the line and position of the error OR allow the exception type
     // to print a pretty error message if possible (2 cases of the enum)
-    public func parse<T: Any>(_ sequence: String, tokenizer: Tokenizer = Tokenizer.defaultTokenizer) throws -> T? {
+    public func parse<T: Any>(_ sequence: String, options: Options = [], tokenizer: Tokenizer = Tokenizer.defaultTokenizer) throws -> T? {
         let tokens = tokenizer.tokenize(sequence: sequence)
         do {
+            if options.contains(.printParser) {
+                print(self.debugDescription)
+            }
+
             let result = try self.run(tokens, state: (0, 0))
             return result.value as? T
-        } catch let error as Exception.ParsingException {
-            print(error.errorMessage(context: sequence, tokens: tokens))
+        } catch let error as ParsingException {
+            if options.contains(.verboseError) {
+                // TO-DO: redirect the error to stderr https://gist.github.com/algal/0a9aa5a4115d86d5cc1de7ea6d06bd91
+                print(error.errorMessage(context: sequence, tokens: tokens))
+            }
             throw error
         }
     }

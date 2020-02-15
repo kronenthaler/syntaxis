@@ -20,7 +20,7 @@ func pure(_ value: Any) -> Parser {
 func some(_ lambda: @escaping Parser.Filter) -> Parser {
     return Parser("filter()") { (tokens: [Tokenizer.Token], state: Parser.State) throws -> Parser.ParserTuple in
         guard state.position < tokens.count else {
-            throw Parser.Exception.ParsingException(reason: "Unexpected EOF.", state: state)
+            throw Parser.ParsingException(reason: "Unexpected EOF.", state: state)
         }
 
         let token = tokens[state.position]
@@ -29,7 +29,7 @@ func some(_ lambda: @escaping Parser.Filter) -> Parser {
             return (value: token.value,
                     state: (position: position, maxPosition: max(position, state.maxPosition)))
         }
-        throw Parser.Exception.UnexpectedTokenException(token: token.value, state: state)
+        throw Parser.UnexpectedTokenException(token: token.value, state: state)
     }
 }
 
@@ -49,6 +49,6 @@ func eof() -> Parser {
             return (Tokenizer.SpecialTokens.ignored(token: "EOF"), state)
         }
 
-        throw Parser.Exception.ParsingException(reason: "Expected EOF but there are still tokens to process.", state: state)
+        throw Parser.ParsingException(reason: "Expected EOF but there are still tokens to process.", state: state)
     }
 }

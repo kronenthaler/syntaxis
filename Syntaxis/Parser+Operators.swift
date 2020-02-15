@@ -24,9 +24,7 @@ extension Parser {
 
     private static func mergeValues(_ value1: Any, _ value2: Any) -> Any {
         // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
-        let values = [value1, value2].filter { (x: Any) -> Bool in
-            x as? Tokenizer.SpecialTokens == nil
-        }
+        let values = [value1, value2].filter { $0 as? Tokenizer.SpecialTokens == nil }
 
         if values.count == 0 {
             return Tokenizer.SpecialTokens.ignored(token: nil) as Any
@@ -58,7 +56,7 @@ extension Parser {
         return Parser("(\(left.debugDescription) || \(right.debugDescription))") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             do {
                 return try left.run(tokens, state: state)
-            } catch let error as Exception.ParsingException {
+            } catch let error as ParsingException {
                 return try right.run(tokens, state: (state.position, error.state?.maxPosition ?? state.maxPosition))
             }
         }
@@ -81,7 +79,7 @@ extension Parser {
                     currentState = newState
                     result.append(value)
                 }
-            } catch let error as Exception.ParsingException {
+            } catch let error as ParsingException {
                 return (result, error.state ?? state)
             }
         }

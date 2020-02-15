@@ -24,19 +24,22 @@ public class Tokenizer {
     }
 
     // basic tokenizers (per char, per word)
-    public static let defaultTokenizer: Tokenizer = Tokenizer()
-    public static let wordTokenizer: Tokenizer = try! Tokenizer(expression: "(\\S+)", rules: [(index: 1, type: DefaultTokenType.word)])
+    public static var defaultTokenizer: Tokenizer = {
+        let regex = try? NSRegularExpression(pattern: "(.)", options: .caseInsensitive)
+        return Tokenizer(expression: regex ?? NSRegularExpression(), rules: [(index:1, type: DefaultTokenType.character)])
+    }()
+
+    public static var wordTokenizer: Tokenizer = {
+        let regex = try? NSRegularExpression(pattern: "(\\S+)", options: .caseInsensitive)
+        return Tokenizer(expression: regex ?? NSRegularExpression(), rules: [(index:1, type: DefaultTokenType.character)])
+    }()
 
     // data
     private var regex: NSRegularExpression
     private var rules: [Definition]
 
-    convenience init() {
-        try! self.init(expression: "(.)", rules: [(index:1, type: DefaultTokenType.character)])
-    }
-
-    init(expression: String, rules: [Definition]) throws {
-        self.regex = try NSRegularExpression(pattern: expression, options: .caseInsensitive)
+    init(expression: NSRegularExpression, rules: [Definition]) {
+        self.regex = expression
         self.rules = rules
     }
 
@@ -48,14 +51,14 @@ public class Tokenizer {
 
         let size = self.rules.count
         for match in matches {
-            for i in 0..<size {
-                let definition = self.rules[i].index
+            for index in 0..<size {
+                let definition = self.rules[index].index
                 guard definition < match.numberOfRanges else {
                     continue
                 }
 
                 let range: NSRange = match.range(at: definition)
-                tokens.append((value: fasterSequence.substring(with: range), type: self.rules[i].type, range: range))
+                tokens.append((value: fasterSequence.substring(with: range), type: self.rules[index].type, range: range))
             }
         }
 

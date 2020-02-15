@@ -13,20 +13,6 @@ import XCTest
 
 class TokenizerSpec: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testInit() {
-        expect {
-            try Tokenizer(expression: "invalid-regex[", rules: [])
-        }.to(throwError())
-    }
-
     func testTokenize() {
         enum types: Int, TokenType {
             case key = 1
@@ -35,7 +21,8 @@ class TokenizerSpec: XCTestCase {
         }
 
         do {
-            let tokenizer = try Tokenizer(expression: "\\{(.*): (.*)\\}", rules: [
+            let regex = try NSRegularExpression(pattern: "\\{(.*): (.*)\\}", options: .caseInsensitive)
+            let tokenizer = Tokenizer(expression: regex, rules: [
                 (index: 1, type: types.key),
                 (index: 2, type: types.value),
                 (index: 3, type: types.unknown)
