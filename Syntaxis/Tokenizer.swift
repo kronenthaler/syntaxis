@@ -58,7 +58,9 @@ public class Tokenizer {
                 }
 
                 let range: NSRange = match.range(at: definition)
-                tokens.append((value: fasterSequence.substring(with: range), type: self.rules[index].type, range: range))
+                if range.location != NSNotFound {
+                    tokens.append((value: fasterSequence.substring(with: range), type: self.rules[index].type, range: range))
+                }
             }
         }
 

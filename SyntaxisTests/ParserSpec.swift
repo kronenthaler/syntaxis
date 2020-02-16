@@ -73,17 +73,6 @@ class ParserSpec: XCTestCase {
         }.to(throwError(Parser.UnexpectedTokenException(token: "Mike")))
     }
 
-    func testAndSuccessIgnoredIgnored() {
-        let parserA = skip(token("hello"))
-        let parserB = skip(token("John"))
-
-        let parser = parserA && parserB
-
-        let result = try! parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as Tokenizer.SpecialTokens?
-
-        expect(result).to(matchIgnoredToken(nil as String?))
-    }
-
     func testAndSuccessIgnoredObject() {
         let parserA = skip(token("hello"))
         let parserB = token("John")

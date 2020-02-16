@@ -26,10 +26,6 @@ extension Parser {
         // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
         let values = [value1, value2].filter { $0 as? Tokenizer.SpecialTokens == nil }
 
-        if values.count == 0 {
-            return Tokenizer.SpecialTokens.ignored(token: nil) as Any
-        }
-
         // single values make no sense as lists
         if values.count == 1 {
             return values[0]
@@ -72,15 +68,15 @@ extension Parser {
     static postfix func * (parser: Parser) -> Parser {
         return Parser("(\(parser.debugDescription))*") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             var result: [Any] = []
+            var currentState: State = state
             do {
-                var currentState: State = state
                 while true {
                     let (value, newState) = try parser.run(tokens, state: currentState)
                     currentState = newState
                     result.append(value)
                 }
-            } catch let error as ParsingException {
-                return (result, error.state ?? state)
+            } catch is ParsingException {
+                return (result, currentState)
             }
         }
     }
