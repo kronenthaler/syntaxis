@@ -41,18 +41,15 @@ extension Parser {
             guard let state = self.state else { return "" }
             let source = context as NSString
 
-            // TO-DO: change the usage of token for the indexes for the EOF case.
-            // find infracting token based on the state || EOF
             var lowerBound = context.count - 1
             var upperBound = context.count
-
             if state.position < tokens.count {
                 let token: Tokenizer.Token = tokens[state.position]
                 lowerBound = token.range.lowerBound
                 upperBound = token.range.upperBound
             }
 
-            // count how many newlines there are between 0-token.range.location
+            // count how many newlines there are between [0, token.range.location)
             let prefixIndex = context.index(context.startIndex, offsetBy: lowerBound + 1)
             let prefix = context[..<prefixIndex]
             let lines = prefix.components(separatedBy: CharacterSet(charactersIn: "\n\r"))
@@ -62,21 +59,13 @@ extension Parser {
             let characterPosition = state.position < tokens.count ? lastLine.count : context.count + 1
 
             // find the lower bound, max(0, lowerBound - 20, indexOf(\n))
-            var shift = lowerBound
-            var lowerOffset = 0
-            if lowerBound - 20 > 0 {
-                lowerOffset = lowerBound - 20
-                shift = 20
-            }
-
-            for index in stride(from: lowerBound, to: lowerOffset, by: -1) {
-                // check that the offset is not going out of bounds...
-                let charAt = context[context.index(context.startIndex, offsetBy: index)]
-                if charAt == Character("\n") {
-                    lowerOffset = index + 1
-                    shift = lowerBound - index - 1
-                    break
-                }
+            var shift = min(lowerBound, 20)
+            var lowerOffset = max(0, lowerBound - 20)
+            let bottomRange = NSRange(location: lowerOffset, length: lowerBound - lowerOffset)
+            let lowerRange = source.range(of: "\n", options: [.backwards, .caseInsensitive], range: bottomRange)
+            if lowerRange.location != NSNotFound {
+                lowerOffset = lowerRange.lowerBound + 1
+                shift = lowerBound - lowerRange.lowerBound - 1
             }
 
             // calculate upper bound clipping in the first new line character found.
@@ -96,7 +85,7 @@ extension Parser {
             return """
             Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
             \(target)
-            \(String(repeating: " ", count: max(0, shift)) + "⤴")
+            \(String(repeating: " ", count: max(0, shift)))⤴
             """
         }
     }
