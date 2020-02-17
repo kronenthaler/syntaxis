@@ -266,6 +266,24 @@ class ParserSpec: XCTestCase {
         expect(result) == "hello"
     }
 
+    func testParsingExceptionCoderInitializer() {
+        expect {
+            _ = Parser.ParsingException(coder: NSCoder())
+        }.to(throwAssertion())
+    }
+
+    func testRuntimeExceptionCodecInitializer() {
+        expect {
+            _ = Parser.RuntimeException(coder: NSCoder())
+        }.to(throwAssertion())
+    }
+
+    func testUnexpectedTokenExceptionCodecInitializer() {
+        expect {
+            _ = Parser.UnexpectedTokenException(coder: NSCoder())
+        }.to(throwAssertion())
+    }
+
     func testExpectionErrorMessageInMultilines() {
         let parser = token("hello") && token("Mike") && token(":")
         let context = "hello    \n      \n     \n     \n     Mike , < 20 chars after."

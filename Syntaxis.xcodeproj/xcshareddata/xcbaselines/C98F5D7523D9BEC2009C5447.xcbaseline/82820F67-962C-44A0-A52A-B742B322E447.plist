@@ -64,6 +64,8 @@
 					<real>0.171</real>
 					<key>baselineIntegrationDisplayName</key>
 					<string>Local Baseline</string>
+					<key>maxPercentRelativeStandardDeviation</key>
+					<real>15</real>
 				</dict>
 			</dict>
 			<key>testPersformanceTokenizer10kb()</key>

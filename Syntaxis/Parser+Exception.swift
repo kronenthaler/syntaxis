@@ -31,12 +31,6 @@ extension Parser {
             fatalError("init(coder:) has not been implemented")
         }
 
-        public static func == (lhs: ParsingException, rhs: ParsingException) -> Bool {
-            return lhs.reason == rhs.reason &&
-                lhs.state?.position == rhs.state?.position &&
-                lhs.state?.maxPosition == rhs.state?.maxPosition
-        }
-
         public func errorMessage(context: String, tokens: [Tokenizer.Token]) -> String {
             guard let state = self.state else { return "" }
             let source = context as NSString
@@ -102,11 +96,5 @@ extension Parser {
             fatalError("init(coder:) has not been implemented")
         }
 
-        public static func == (lhs: UnexpectedTokenException, rhs: UnexpectedTokenException) -> Bool {
-            return lhs.reason == rhs.reason &&
-                lhs.token == rhs.token &&
-                lhs.state?.position == rhs.state?.position &&
-                lhs.state?.maxPosition == rhs.state?.maxPosition
-        }
     }
 }

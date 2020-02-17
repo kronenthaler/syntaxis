@@ -14,8 +14,6 @@
 		C95745F423EEF66E00FE753A /* Parser+Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F323EEF66E00FE753A /* Parser+Combinators.swift */; };
 		C95745F623EEF73D00FE753A /* Parser+Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F523EEF73D00FE753A /* Parser+Exception.swift */; };
 		C98DD31323FB2DC200AF385F /* sample-100kb.json in Resources */ = {isa = PBXBuildFile; fileRef = C98DD31123FB2DC200AF385F /* sample-100kb.json */; };
-		C98DD31423FB2DC200AF385F /* sample-1000kb.json in Resources */ = {isa = PBXBuildFile; fileRef = C98DD31223FB2DC200AF385F /* sample-1000kb.json */; };
-		C98DD31623FB2DF000AF385F /* sample-10kb.json in Resources */ = {isa = PBXBuildFile; fileRef = C98DD31523FB2DF000AF385F /* sample-10kb.json */; };
 		C98F5D7723D9BEC2009C5447 /* Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */; };
 		C98F5D7E23D9BEC2009C5447 /* Syntaxis.h in Headers */ = {isa = PBXBuildFile; fileRef = C98F5D7023D9BEC2009C5447 /* Syntaxis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C98F5D8823D9C264009C5447 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8723D9C264009C5447 /* Parser.swift */; };
@@ -46,8 +44,6 @@
 		C95745F323EEF66E00FE753A /* Parser+Combinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Combinators.swift"; sourceTree = "<group>"; };
 		C95745F523EEF73D00FE753A /* Parser+Exception.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Exception.swift"; sourceTree = "<group>"; };
 		C98DD31123FB2DC200AF385F /* sample-100kb.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sample-100kb.json"; sourceTree = "<group>"; };
-		C98DD31223FB2DC200AF385F /* sample-1000kb.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sample-1000kb.json"; sourceTree = "<group>"; };
-		C98DD31523FB2DF000AF385F /* sample-10kb.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sample-10kb.json"; sourceTree = "<group>"; };
 		C98F5D6D23D9BEC2009C5447 /* Syntaxis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Syntaxis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C98F5D7023D9BEC2009C5447 /* Syntaxis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Syntaxis.h; sourceTree = "<group>"; };
 		C98F5D7123D9BEC2009C5447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,9 +101,7 @@
 		C938DE8923FAD252001E1351 /* dataSamples */ = {
 			isa = PBXGroup;
 			children = (
-				C98DD31523FB2DF000AF385F /* sample-10kb.json */,
 				C98DD31123FB2DC200AF385F /* sample-100kb.json */,
-				C98DD31223FB2DC200AF385F /* sample-1000kb.json */,
 			);
 			path = dataSamples;
 			sourceTree = "<group>";
@@ -264,9 +258,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C98DD31423FB2DC200AF385F /* sample-1000kb.json in Resources */,
 				C98DD31323FB2DC200AF385F /* sample-100kb.json in Resources */,
-				C98DD31623FB2DF000AF385F /* sample-10kb.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

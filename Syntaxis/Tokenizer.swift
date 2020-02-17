@@ -44,6 +44,8 @@ public class Tokenizer {
     }
 
     func tokenize(sequence: String) -> [Token] {
+        /// TO-DO: need to improve the performance of this. Maybe parsing all the tokens in one go is not the best option all around.
+        /// check if it is possible to use some sort of Collection with yield pattern to consume the tokens + memorize them, meaning parse one token at the time
         let fasterSequence = sequence as NSString
 
         let matches = self.regex.matches(in: sequence, options: [], range: NSRange(location: 0, length: sequence.count))
