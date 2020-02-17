@@ -23,7 +23,6 @@ extension Parser {
     }
 
     private static func mergeValues(_ value1: Any, _ value2: Any) -> Any {
-        // IDEA: check if this can be rewritten as a map/reduce, flatMap or something the like...
         let values = [value1, value2].filter { $0 as? Tokenizer.SpecialTokens == nil }
 
         // single values make no sense as lists

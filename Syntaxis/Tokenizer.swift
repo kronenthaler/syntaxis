@@ -46,7 +46,7 @@ public class Tokenizer {
     func tokenize(sequence: String) -> [Token] {
         let fasterSequence = sequence as NSString
 
-        let matches = self.regex .matches(in: sequence, options: [], range: NSRange(location: 0, length: sequence.count))
+        let matches = self.regex.matches(in: sequence, options: [], range: NSRange(location: 0, length: sequence.count))
         var tokens: [Token] = []
 
         let size = self.rules.count

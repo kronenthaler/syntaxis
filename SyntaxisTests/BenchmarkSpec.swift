@@ -22,24 +22,23 @@ class BenchmarkSpec: XCTestCase {
         case String
         case Operator
     }
+
     override func setUp() {
         super.setUp()
 
-        let _op = { (op: String) -> Parser in
-            return skip(token(op))
-        }
+        let _op = { (op: String) -> Parser in skip(token(op)) }
         let value = Parser("value")
         let _null = token("null") => { _ in return NSNull() }
         let _false = token("false") => { _ in return false }
         let _true = token("true") => { _ in return true }
         let _number = some { (token: Tokenizer.Token) -> Bool in (token.type as! JsonTokenType).rawValue == JsonTokenType.Numeric.rawValue } => { ($0 as! NSString).floatValue }
         let _string = some { (token: Tokenizer.Token) -> Bool in (token.type as! JsonTokenType).rawValue == JsonTokenType.String.rawValue }
-        let _array = (_op("[") && maybe(value && (_op(",") && value)*) && _op("]")) => { [$0] }
+        let _array = (_op("[") && maybe(value && (_op(",") && value)*) && _op("]")) => { $0 }
         let member = (_string && _op(":") && value) => {
             (something: Any) -> Any in
             if let pair = something as? [Any],
                 let key = pair[0] as? String {
-                return [key: pair[1]]
+                return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
             }
             return something
         }
@@ -72,11 +71,43 @@ class BenchmarkSpec: XCTestCase {
         }
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testParsingBooleans() {
+        do {
+            let result = try jsonParser.parse("true", options: [.verboseError], tokenizer: jsonTokenizer) as Bool?
+            expect(result) == true
+        } catch {
+            fail()
+        }
     }
 
-    func _testParsingArrays() {
+    func testParsingStrings() {
+        do {
+            let result = try jsonParser.parse("\"hello world\"", options: [.verboseError], tokenizer: jsonTokenizer) as String?
+            expect(result) == "hello world"
+        } catch {
+            fail()
+        }
+    }
+
+    func testParsingNumbers() {
+        do {
+            let result = try jsonParser.parse("-31415926.5e-7", options: [.verboseError], tokenizer: jsonTokenizer) as Float?
+            expect(result) == -3.14159265
+        } catch {
+            fail()
+        }
+    }
+
+    func testParsingNulls() {
+        do {
+            let result = try jsonParser.parse("null", options: [.verboseError], tokenizer: jsonTokenizer) as NSNull?
+            expect(result) == NSNull()
+        } catch {
+            fail()
+        }
+    }
+
+    func testParsingArrays() {
         do {
             let result = try jsonParser.parse("[\"hi\", 0, -3.14159265, true, false, null]", options: [.verboseError], tokenizer: jsonTokenizer) as [Any]?
             expect(result?[0] as? String) == "hi"
@@ -104,7 +135,7 @@ class BenchmarkSpec: XCTestCase {
                     "b1": -0.3
                 }
             }
-            """, options:[.verboseError], tokenizer: jsonTokenizer) as [String: Any]?
+            """, options: [.verboseError], tokenizer: jsonTokenizer) as [String: Any]?
             expect(result?["a"] as? [Float]) == [1.0, 2.0, 3.0]
             expect(result?["b"] as? NSNull) == NSNull()
             expect(result?["c"] as? Bool) == true
@@ -114,6 +145,99 @@ class BenchmarkSpec: XCTestCase {
             expect((result?["f"] as! [String: Any])["b1"] as? Float).to(equal(-0.3))
         } catch {
             fail(error.localizedDescription)
+        }
+    }
+
+    func testPersformanceTokenizer10kb() {
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-10kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+            self.measure {
+                _ = jsonTokenizer.tokenize(sequence: content)
+            }
+        }
+    }
+
+    func testPersformanceTokenizer100kb() {
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+            self.measure {
+                _ = jsonTokenizer.tokenize(sequence: content)
+            }
+        }
+    }
+
+    func testPersformanceTokenizer1000kb() {
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-1000kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+            self.measure {
+                _ = jsonTokenizer.tokenize(sequence: content)
+            }
+        }
+    }
+
+    func testPerformance10kb() {
+        // load a sample json file from a decent size > 5kb
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-10kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+
+            self.measure {
+                do {
+                    let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?
+                    expect(result?.count) == 10
+                } catch {
+                    fail()
+                }
+            }
+        } else {
+            fail()
+        }
+    }
+
+    func testPerformance100kb() {
+        // load a sample json file from a decent size > 5kb
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+
+            self.measure {
+                do {
+                    let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?
+                    expect(result?.count) == 100
+                } catch {
+                    fail()
+                }
+            }
+        } else {
+            fail()
+        }
+    }
+
+    func testPerformance1000kb() {
+        // load a sample json file from a decent size > 5kb
+        let bundle = Bundle(for: BenchmarkSpec.self)
+        if let url = bundle.url(forResource: "sample-1000kb", withExtension: "json"),
+            let data = try? Data(contentsOf: url),
+            let content = String(data: data, encoding: .utf8) {
+
+            self.measure {
+                do {
+                    let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?
+                    expect(result?.count) == 999
+                } catch {
+                    fail()
+                }
+            }
+        } else {
+            fail()
         }
     }
 }
