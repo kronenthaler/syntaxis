@@ -57,7 +57,7 @@ class BenchmarkSpec: XCTestCase {
         jsonParser = value.define(_null || _true || _false || _string || _number || _array || _dict) && eof()
 
         do {
-            let regex = try NSRegularExpression(pattern: "(null)|(false)|(true)|\"([^\"\n]*?)\"|((-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?))|([\\{\\}\\[\\]:,])", options: [])
+            let regex = try NSRegularExpression(pattern: #"(null)|(false)|(true)|"([^"\n]*?)"|((-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?))|([\{\}\[\]:,])"#, options: [])
             jsonTokenizer = Tokenizer(expression: regex, rules: [
                 (1, JsonTokenType.Null),
                 (2, JsonTokenType.False),

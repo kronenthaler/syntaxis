@@ -21,7 +21,7 @@ class TokenizerSpec: XCTestCase {
         }
 
         do {
-            let regex = try NSRegularExpression(pattern: "\\{(.*): (.*)\\}", options: .caseInsensitive)
+            let regex = try NSRegularExpression(pattern: #"\{(.*): (.*)\}"#, options: .caseInsensitive)
             let tokenizer = Tokenizer(expression: regex, rules: [
                 (index: 1, type: types.key),
                 (index: 2, type: types.value),

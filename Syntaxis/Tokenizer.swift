@@ -30,7 +30,7 @@ public class Tokenizer {
     }()
 
     public static var wordTokenizer: Tokenizer = {
-        let regex = try? NSRegularExpression(pattern: "(\\S+)", options: .caseInsensitive)
+        let regex = try? NSRegularExpression(pattern: #"(\S+)"#, options: .caseInsensitive)
         return Tokenizer(expression: regex ?? NSRegularExpression(), rules: [(index:1, type: DefaultTokenType.character)])
     }()
 
