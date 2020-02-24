@@ -11,30 +11,20 @@ import Nimble
 @testable import Syntaxis
 
 class BenchmarkSpec: XCTestCase {
-    var jsonParser: Parser = Parser("sample")
-    var jsonTokenizer: Tokenizer = Tokenizer(expression: NSRegularExpression(), rules: [])
-
-    enum JsonTokenType: Int, TokenType {
-        case Null = 0
-        case False
-        case True
-        case Numeric
-        case String
-        case Operator
-    }
-
-    override func setUp() {
-        super.setUp()
-
-        let _op = { (op: String) -> Parser in skip(token(op)) }
+    let jsonParser: Parser = {
+        let `operator` = { (char: String) -> Parser in skip(token(char)) }
         let value = Parser("value")
-        let _null = token("null") => { _ in return NSNull() }
-        let _false = token("false") => { _ in return false }
-        let _true = token("true") => { _ in return true }
-        let _number = some { (token: Tokenizer.Token) -> Bool in (token.type as! JsonTokenType).rawValue == JsonTokenType.Numeric.rawValue } => { ($0 as! NSString).floatValue }
-        let _string = some { (token: Tokenizer.Token) -> Bool in (token.type as! JsonTokenType).rawValue == JsonTokenType.String.rawValue }
-        let _array = (_op("[") && maybe(value && (_op(",") && value)*) && _op("]")) => { $0 }
-        let member = (_string && _op(":") && value) => {
+        let `null` = token("null") => { _ in return NSNull() }
+        let `false` = token("false") => { _ in return false }
+        let `true` = token("true") => { _ in return true }
+        let number = some { (token: Tokenizer.Token) -> Bool in
+            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue
+            } => { ($0 as? NSString)?.floatValue as Any }
+        let string = some { (token: Tokenizer.Token) -> Bool in
+            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue
+        }
+        let array = (`operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")) => { $0 }
+        let member = (string && `operator`(":") && value) => {
             (something: Any) -> Any in
             if let pair = something as? [Any],
                 let key = pair[0] as? String {
@@ -42,7 +32,7 @@ class BenchmarkSpec: XCTestCase {
             }
             return something
         }
-        let _dict = (_op("{") && maybe(member && (_op(",") && member)*) && _op("}")) => {
+        let dict = (`operator`("{") && maybe(member && (`operator`(",") && member)*) && `operator`("}")) => {
             (something: Any) -> Any in
             var result: [String: Any] = [:]
             if let items = something as? [[String: Any]] {
@@ -53,18 +43,40 @@ class BenchmarkSpec: XCTestCase {
             }
             return something
         }
+        return value.define(`null` || `true` || `false` || string || number || array || dict) && eof()
+    }()
 
-        jsonParser = value.define(_null || _true || _false || _string || _number || _array || _dict) && eof()
+    var jsonTokenizer: Tokenizer = Tokenizer(expression: NSRegularExpression(), rules: [])
+
+    enum JsonTokenType: Int, TokenType {
+        case `null` = 0
+        case `false`
+        case `true`
+        case numeric
+        case string
+        case `operator`
+    }
+
+    override func setUp() {
+        super.setUp()
 
         do {
-            let regex = try NSRegularExpression(pattern: #"(null)|(false)|(true)|"([^"\n]*?)"|((-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?))|([\{\}\[\]:,])"#, options: [])
+            let regex = try NSRegularExpression(pattern: #"""
+                (?x)
+                (null)|
+                (false)|
+                (true)|
+                "([^"\n]*?)"|
+                ((-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?))|
+                ([\{\}\[\]:,])
+                """#, options: [])
             jsonTokenizer = Tokenizer(expression: regex, rules: [
-                (1, JsonTokenType.Null),
-                (2, JsonTokenType.False),
-                (3, JsonTokenType.True),
-                (4, JsonTokenType.String),
-                (5, JsonTokenType.Numeric),
-                (7, JsonTokenType.Operator)
+                (1, JsonTokenType.null),
+                (2, JsonTokenType.false),
+                (3, JsonTokenType.true),
+                (4, JsonTokenType.string),
+                (5, JsonTokenType.numeric),
+                (7, JsonTokenType.operator)
             ])
         } catch {
             fail()
@@ -109,7 +121,9 @@ class BenchmarkSpec: XCTestCase {
 
     func testParsingArrays() {
         do {
-            let result = try jsonParser.parse("[\"hi\", 0, -3.14159265, true, false, null]", options: [.verboseError], tokenizer: jsonTokenizer) as [Any]?
+            let result = try jsonParser.parse("[\"hi\", 0, -3.14159265, true, false, null]",
+                                              options: [.verboseError],
+                                              tokenizer: jsonTokenizer) as [Any]?
             expect(result?[0] as? String) == "hi"
             expect(result?[1] as? Float) == 0
             expect(result?[2] as? Float) == -3.14159265
@@ -141,8 +155,8 @@ class BenchmarkSpec: XCTestCase {
             expect(result?["c"] as? Bool) == true
             expect(result?["d"] as? Bool) == false
             expect(result?["e"] as? String) == "abc"
-            expect((result?["f"] as! [String: Any])["a1"] as? [Int]) == []
-            expect((result?["f"] as! [String: Any])["b1"] as? Float).to(equal(-0.3))
+            expect((result?["f"] as? [String: Any])?["a1"] as? [Int]) == []
+            expect((result?["f"] as? [String: Any])?["b1"] as? Float).to(equal(-0.3))
         } catch {
             fail(error.localizedDescription)
         }

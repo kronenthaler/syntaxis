@@ -19,6 +19,9 @@
 		C98F5D8823D9C264009C5447 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8723D9C264009C5447 /* Parser.swift */; };
 		C98F5D8A23D9C55E009C5447 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8923D9C55E009C5447 /* Tokenizer.swift */; };
 		C98F5D8C23D9C9E2009C5447 /* TokenizerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */; };
+		C9D97FAE2403FB2D000352A3 /* ParserCombinatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */; };
+		C9D97FB02403FBCC000352A3 /* ParserOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */; };
+		C9D97FB22403FC23000352A3 /* ParserExceptionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */; };
 		C9EB6A5E23E46792005ADF72 /* NimbleMatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */; };
 		C9FC8AE923F976B600255431 /* BenchmarkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */; };
 /* End PBXBuildFile section */
@@ -52,6 +55,9 @@
 		C98F5D8723D9C264009C5447 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		C98F5D8923D9C55E009C5447 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerSpec.swift; sourceTree = "<group>"; };
+		C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserCombinatorsSpec.swift; sourceTree = "<group>"; };
+		C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserOperatorsSpec.swift; sourceTree = "<group>"; };
+		C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserExceptionsSpec.swift; sourceTree = "<group>"; };
 		C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleMatchers.swift; sourceTree = "<group>"; };
 		C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkSpec.swift; sourceTree = "<group>"; };
 		F6D2C561345B9F14DAD8C0B1 /* Pods-Syntaxis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.debug.xcconfig"; sourceTree = "<group>"; };
@@ -149,6 +155,9 @@
 				C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */,
 				C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */,
 				C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */,
+				C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */,
+				C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */,
+				C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */,
 			);
 			path = SyntaxisTests;
 			sourceTree = "<group>";
@@ -325,7 +334,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Syntaxis\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "cd \"${SRCROOT}/${TARGET_NAME}\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -343,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Syntaxis\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "cd \"${SRCROOT}/${TARGET_NAME}\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
 		};
 		F1A0DCAB4B0E9CB97439AEB3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -382,9 +391,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9FC8AE923F976B600255431 /* BenchmarkSpec.swift in Sources */,
+				C9D97FB22403FC23000352A3 /* ParserExceptionsSpec.swift in Sources */,
 				C98F5D8C23D9C9E2009C5447 /* TokenizerSpec.swift in Sources */,
 				C9EB6A5E23E46792005ADF72 /* NimbleMatchers.swift in Sources */,
+				C9D97FAE2403FB2D000352A3 /* ParserCombinatorsSpec.swift in Sources */,
 				C92A839623E30E8500583992 /* ParserSpec.swift in Sources */,
+				C9D97FB02403FBCC000352A3 /* ParserOperatorsSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
