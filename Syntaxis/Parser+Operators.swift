@@ -9,6 +9,7 @@
 import Foundation
 
 infix operator =>   // transform
+infix operator <-   // define
 postfix operator *  // zero or more (many)
 postfix operator +  // one or more (one plus)
 
@@ -62,6 +63,17 @@ extension Parser {
             let (value, newState) = try parser.run(tokens, state: state)
             return (value: transformation(value), state: newState)
         }
+    }
+
+    /// Assigns the src's parser definition into the target's definition
+    /// @param target The receiving end of the operation
+    /// @param src The source of the operation
+    /// @return Returns the recently modified target definition
+    /// @discussion This method is extremely useful whenever the grammar contains some level of self-reflection. This method allows to use a forward declaration
+    /// for the definitions until all the components of this parser have been defined and then it can be assigned back to itself.
+    static func <- (target: Parser, src: Parser) -> Parser {
+        target.definition = src.definition
+        return target
     }
 
     static postfix func * (parser: Parser) -> Parser {

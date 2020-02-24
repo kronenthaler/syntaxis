@@ -43,7 +43,7 @@ class BenchmarkSpec: XCTestCase {
             }
             return something
         }
-        return value.define(`null` || `true` || `false` || string || number || array || dict) && eof()
+        return (value <- (`null` || `true` || `false` || string || number || array || dict)) && eof()
     }()
 
     var jsonTokenizer: Tokenizer = Tokenizer(expression: NSRegularExpression(), rules: [])
@@ -79,7 +79,7 @@ class BenchmarkSpec: XCTestCase {
                 (7, JsonTokenType.operator)
             ])
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -88,7 +88,7 @@ class BenchmarkSpec: XCTestCase {
             let result = try jsonParser.parse("true", options: [.verboseError], tokenizer: jsonTokenizer) as Bool?
             expect(result) == true
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -97,7 +97,7 @@ class BenchmarkSpec: XCTestCase {
             let result = try jsonParser.parse("\"hello world\"", options: [.verboseError], tokenizer: jsonTokenizer) as String?
             expect(result) == "hello world"
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -106,7 +106,7 @@ class BenchmarkSpec: XCTestCase {
             let result = try jsonParser.parse("-31415926.5e-7", options: [.verboseError], tokenizer: jsonTokenizer) as Float?
             expect(result) == -3.14159265
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -115,7 +115,7 @@ class BenchmarkSpec: XCTestCase {
             let result = try jsonParser.parse("null", options: [.verboseError], tokenizer: jsonTokenizer) as NSNull?
             expect(result) == NSNull()
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -131,7 +131,7 @@ class BenchmarkSpec: XCTestCase {
             expect(result?[4] as? Bool) == false
             expect(result?[5] as? NSNull) == NSNull()
         } catch {
-            fail()
+            fail(error.localizedDescription)
         }
     }
 
@@ -185,11 +185,11 @@ class BenchmarkSpec: XCTestCase {
                     let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?
                     expect(result?.count) == 100
                 } catch {
-                    fail()
+                    fail(error.localizedDescription)
                 }
             }
         } else {
-            fail()
+            fail("Unable to load sample data")
         }
     }
 }

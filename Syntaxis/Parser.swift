@@ -52,14 +52,6 @@ public class Parser {
         return try functor(sequence, state)
     }
 
-    // to be used with forward declarations
-    public func define(_ parser: Parser) -> Parser {
-        self.definition = parser.definition
-        return self
-    }
-
-    // IDEA: the capture of the exception should resolve the line and position of the error OR allow the exception type
-    // to print a pretty error message if possible (2 cases of the enum)
     public func parse<T: Any>(_ sequence: String, options: Options = [], tokenizer: Tokenizer = Tokenizer.defaultTokenizer) throws -> T? {
         let tokens = tokenizer.tokenize(sequence: sequence)
         do {
@@ -71,7 +63,6 @@ public class Parser {
             return result.value as? T
         } catch let error as ParsingException {
             if options.contains(.verboseError) {
-                // TO-DO: redirect the error to stderr https://gist.github.com/algal/0a9aa5a4115d86d5cc1de7ea6d06bd91
                 print(error.errorMessage(context: sequence, tokens: tokens))
             }
             throw error
