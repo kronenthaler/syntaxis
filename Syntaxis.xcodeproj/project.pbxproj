@@ -115,8 +115,8 @@
 		C98F5D6323D9BEC2009C5447 = {
 			isa = PBXGroup;
 			children = (
-				C98F5D6F23D9BEC2009C5447 /* Syntaxis */,
-				C98F5D7A23D9BEC2009C5447 /* SyntaxisTests */,
+				C98F5D6F23D9BEC2009C5447 /* Classes */,
+				C98F5D7A23D9BEC2009C5447 /* Tests */,
 				C98F5D6E23D9BEC2009C5447 /* Products */,
 				1A0A3068172F0C8AB330F948 /* Pods */,
 				5329E1D637E9C157F5F277A1 /* Frameworks */,
@@ -132,34 +132,50 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C98F5D6F23D9BEC2009C5447 /* Syntaxis */ = {
+		C98F5D6F23D9BEC2009C5447 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C98F5D7123D9BEC2009C5447 /* Info.plist */,
+				C9EE68F12405B77200323022 /* Supporting Files */,
 				C98F5D8723D9C264009C5447 /* Parser.swift */,
 				C95745F323EEF66E00FE753A /* Parser+Combinators.swift */,
 				C95745F523EEF73D00FE753A /* Parser+Exception.swift */,
 				C95745F123EEF63700FE753A /* Parser+Operators.swift */,
-				C98F5D7023D9BEC2009C5447 /* Syntaxis.h */,
 				C98F5D8923D9C55E009C5447 /* Tokenizer.swift */,
 			);
-			path = Syntaxis;
+			path = Classes;
 			sourceTree = "<group>";
 		};
-		C98F5D7A23D9BEC2009C5447 /* SyntaxisTests */ = {
+		C98F5D7A23D9BEC2009C5447 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				C938DE8923FAD252001E1351 /* dataSamples */,
-				C98F5D7D23D9BEC2009C5447 /* Info.plist */,
+				C9EE68F22405B78900323022 /* Supporting Files */,
+				C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */,
+				C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */,
+				C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */,
+				C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */,
+				C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */,
 				C92A839523E30E8500583992 /* ParserSpec.swift */,
 				C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */,
-				C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */,
-				C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */,
-				C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */,
-				C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */,
-				C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */,
 			);
-			path = SyntaxisTests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		C9EE68F12405B77200323022 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C98F5D7123D9BEC2009C5447 /* Info.plist */,
+				C98F5D7023D9BEC2009C5447 /* Syntaxis.h */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C9EE68F22405B78900323022 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C98F5D7D23D9BEC2009C5447 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,7 +350,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/${TARGET_NAME}\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "cd \"${SRCROOT}/Tests\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -352,7 +368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/${TARGET_NAME}\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "cd \"${SRCROOT}/Classes\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
 		};
 		F1A0DCAB4B0E9CB97439AEB3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -541,7 +557,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Syntaxis/Info.plist;
+				INFOPLIST_FILE = "Classes/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -568,7 +584,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Syntaxis/Info.plist;
+				INFOPLIST_FILE = "Classes/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -590,7 +606,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SyntaxisTests/Info.plist;
+				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -609,7 +625,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = SyntaxisTests/Info.plist;
+				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
