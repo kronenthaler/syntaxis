@@ -1,0 +1,29 @@
+name: branch-check
+on: [push, pull_request]
+jobs:
+  build:
+    name: Build & Test
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        id: checkout
+
+      - name: Prerequisites
+        run: |
+          gem install xcpretty
+          brew install swiftlint
+          pod install
+
+      - name: Test
+        run: xcodebuild -workspace Syntaxis.xcworkspace -scheme Syntaxis -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" test | xcpretty --report junit --output reports/test-report.xml
+
+      - name: Report Lint
+        run: swiftlint lint --config .swiftlint.yml Classes/ Tests/
+
+      - name: Coveralls check
+        run: "echo sending to coveralls ${{ secrets.CODACY }} "
+
+      - name: Codacy check
+        run: "echo sending to codacy ${{ secrets.CODACY }} "
+

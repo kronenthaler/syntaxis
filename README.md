@@ -1,3 +1,6 @@
+![Build Status](https://github.com/kronenthaler/syntaxis/workflows/branch-check/badge.svg?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ddf9d1cd3074694923c1ac0b35654a3)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kronenthaler/syntaxis&amp;utm_campaign=Badge_Grade) 
+
 # Syntaxis
 
 A functional parsing library based on parser combinators
