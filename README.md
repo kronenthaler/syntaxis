@@ -1,4 +1,4 @@
-![Build Status](https://github.com/kronenthaler/syntaxis/workflows/branch-check/badge.svg?branch=master)
+![branch-check](https://github.com/kronenthaler/syntaxis/workflows/branch-check/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ddf9d1cd3074694923c1ac0b35654a3)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kronenthaler/syntaxis&amp;utm_campaign=Badge_Grade) 
 
 # Syntaxis
@@ -86,7 +86,7 @@ let tokenizer = Tokenizer(expression: regex, rules: [
 
 The above tells the tokenizer that the first matching group `(null)`, should be labeled as a `JsonTokenType.null` and so on. 
 
-_Important:_ beware that some expressions may contain nested matching groups. You need to consider those when passing the index into the tokenizer. [regex101.com](https://regex101.com/r/iPF3rz/2) it's a handy tool while crafting this regexes and determining the capture group indexes.
+_Important:_ beware that some expressions may contain nested matching groups. You need to consider those when passing the index into the tokenizer. [regex101.com](https://regex101.com/r/iPF3rz/2) it's a handy tool while crafting these regexes and determining the capture group indexes.
 
 ### Parser definition
 

@@ -16,14 +16,27 @@ jobs:
           pod install
 
       - name: Test
-        run: xcodebuild -workspace Syntaxis.xcworkspace -scheme Syntaxis -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" test | xcpretty --report junit --output reports/test-report.xml
+        run: xcodebuild clean test -workspace Syntaxis.xcworkspace -scheme Syntaxis -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11,OS=latest" -derivedDataPath ./build -resultBundlePath ./build/run.xcresult -enableCodeCoverage YES | xcpretty --report junit --output reports/test-report.xml
 
       - name: Report Lint
         run: swiftlint lint --config .swiftlint.yml Classes/ Tests/
 
-      - name: Coveralls check
-        run: "echo sending to coveralls ${{ secrets.CODACY }} "
-
       - name: Codacy check
-        run: "echo sending to codacy ${{ secrets.CODACY }} "
+        run: |
+          # extract the coverage information from the result bundle
+          xcrun xccov view --report --json build/run.xcresult > cov.json
+        
+          # clone the tool to convert xccov to lcov
+          git clone https://github.com/trax-retail/xccov2lcov
+          
+          # convert the coverage reports
+          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info
+          
+          # download codacy coverage reporter
+          curl -Ls -o codacy-coverage-reporter.jar `python -c "import json; l = [x['browser_download_url'] for x in json.loads('''$(curl -LSs https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest)''')['assets'] if x['browser_download_url'].endswith('jar')]; print(l[0])"`
+          
+          # submit the coverage report to codacy
+          java -jar codacy-coverage-reporter.jar report -l Swift --force-language -r lcov.info
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 

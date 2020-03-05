@@ -11,7 +11,7 @@ import Foundation
 public class Parser {
     public typealias State = (position: Int, maxPosition: Int)
     public typealias ParserTuple = (value: Any, state: State)
-    public typealias Functor =  ([Tokenizer.Token], State) throws ->  ParserTuple
+    public typealias Functor =  ([Tokenizer.Token], State) throws -> ParserTuple
     public typealias Filter = (Tokenizer.Token) -> Bool
     public typealias Transformation = (Any) -> Any
 
