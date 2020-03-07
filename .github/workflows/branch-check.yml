@@ -1,5 +1,13 @@
 name: branch-check
-on: [push, pull_request]
+
+on: 
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
 jobs:
   build:
     name: Build & Test
@@ -30,13 +38,18 @@ jobs:
           git clone https://github.com/trax-retail/xccov2lcov
           
           # convert the coverage reports
-          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info
+          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info && cd ..
           
           # download codacy coverage reporter
-          curl -Ls -o codacy-coverage-reporter.jar `python -c "import json; l = [x['browser_download_url'] for x in json.loads('''$(curl -LSs https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest)''')['assets'] if x['browser_download_url'].endswith('jar')]; print(l[0])"`
-          
+          curl -H "Authorization: token $CURL_TOKEN" -LS "https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest" -o codacy-release.json
+          export CODACY_COVERAGE_REPORTER_URL=`python -c "import json; print([x['browser_download_url'] for x in json.load(open('codacy-release.json', 'r'))['assets'] if x['browser_download_url'].endswith('jar')][0])"`
+          curl -H "Authorization: token $CURL_TOKEN" -LS "$CODACY_COVERAGE_REPORTER_URL" -o codacy-coverage-reporter.jar
+
+          echo "> ls -la"; ls -la ../
+
           # submit the coverage report to codacy
           java -jar codacy-coverage-reporter.jar report -l Swift --force-language -r lcov.info
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          CURL_TOKEN: ${{ secrets.CURL_TOKEN }}
 
