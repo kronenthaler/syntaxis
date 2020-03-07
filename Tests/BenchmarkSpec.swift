@@ -67,7 +67,7 @@ class BenchmarkSpec: XCTestCase {
                 (false)|
                 (true)|
                 "([^"\n]*?)"|
-                ((-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?))|
+                (-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)|
                 ([\{\}\[\]:,])
                 """#, options: [])
             jsonTokenizer = Tokenizer(expression: regex, rules: [
@@ -76,7 +76,7 @@ class BenchmarkSpec: XCTestCase {
                 (3, JsonTokenType.true),
                 (4, JsonTokenType.string),
                 (5, JsonTokenType.numeric),
-                (7, JsonTokenType.operator)
+                (6, JsonTokenType.operator)
             ])
         } catch {
             fail(error.localizedDescription)

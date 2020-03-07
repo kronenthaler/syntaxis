@@ -39,11 +39,13 @@ class ParserExceptionsSpec: XCTestCase {
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == """
-Error: Unexpected token (,) found. At line: 5 character: 11
-     Mike , < 20 chars after.
-          ⤴
-"""
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Unexpected token (,) found. At line: 5 character: 11\n"
+            expectedMessage += "     Mike , < 20 chars after.\n"
+            expectedMessage += "          ⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
@@ -57,11 +59,13 @@ Error: Unexpected token (,) found. At line: 5 character: 11
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == """
-Error: Unexpected token (,) found. At line: 1 character: 39
-               Mike , < 20 chars after.
-                    ⤴
-"""
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
+            expectedMessage += "               Mike , < 20 chars after.\n"
+            expectedMessage += "                    ⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
@@ -75,7 +79,13 @@ Error: Unexpected token (,) found. At line: 1 character: 39
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == "Error: Unexpected token (hello) found. At line: 1 character: 1\nhello                    \n⤴"
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Unexpected token (hello) found. At line: 1 character: 1\n"
+            expectedMessage += "hello                    \n"
+            expectedMessage += "⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
@@ -89,11 +99,13 @@ Error: Unexpected token (,) found. At line: 1 character: 39
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == """
-Error: Unexpected token (,) found. At line: 1 character: 39
-               Mike ,
-                    ⤴
-"""
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
+            expectedMessage += "               Mike ,\n"
+            expectedMessage += "                    ⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
@@ -107,11 +119,13 @@ Error: Unexpected token (,) found. At line: 1 character: 39
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == """
-Error: Unexpected EOF. At line: 1 character: 38
-                 Mike
-                    ⤴
-"""
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Unexpected EOF. At line: 1 character: 38\n"
+            expectedMessage += "                 Mike\n"
+            expectedMessage += "                    ⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
@@ -125,11 +139,13 @@ Error: Unexpected EOF. At line: 1 character: 38
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-            expect(message) == """
-Error: Expected EOF but there are still tokens to process. At line: 1 character: 39
-               Mike ,
-                    ⤴
-"""
+
+            var expectedMessage = ""
+            expectedMessage += "Error: Expected EOF but there are still tokens to process. At line: 1 character: 39\n"
+            expectedMessage += "               Mike ,\n"
+            expectedMessage += "                    ⤴"
+
+            expect(message) == expectedMessage
         } catch {
             fail()
         }
