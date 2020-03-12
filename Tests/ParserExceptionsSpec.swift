@@ -12,6 +12,7 @@ import XCTest
 @testable import Syntaxis
 
 class ParserExceptionsSpec: XCTestCase {
+    private let parser = token("hello") && token("Mike") && token(":") && eof()
 
     func testParsingExceptionCoderInitializer() {
         expect {
@@ -32,118 +33,71 @@ class ParserExceptionsSpec: XCTestCase {
     }
 
     func testExpectionErrorMessageInMultilines() {
-        let parser = token("hello") && token("Mike") && token(":")
         let context = "hello    \n      \n     \n     \n     Mike , < 20 chars after."
-        do {
-            _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.ParsingException {
-            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
-            let message = error.errorMessage(context: context, tokens: tokens)
+        var expectedMessage = ""
+        expectedMessage += "Error: Unexpected token (,) found. At line: 5 character: 11\n"
+        expectedMessage += "     Mike , < 20 chars after.\n"
+        expectedMessage += "          ⤴"
 
-            var expectedMessage = ""
-            expectedMessage += "Error: Unexpected token (,) found. At line: 5 character: 11\n"
-            expectedMessage += "     Mike , < 20 chars after.\n"
-            expectedMessage += "          ⤴"
-
-            expect(message) == expectedMessage
-        } catch {
-            fail()
-        }
+        validateException(context, expectedMessage: expectedMessage)
     }
 
     func testExpectionErrorMessageInSingleLine() {
-        let parser = token("hello") && token("Mike") && token(":")
         let context = "hello                            Mike , < 20 chars after."
-        do {
-            _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.ParsingException {
-            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
-            let message = error.errorMessage(context: context, tokens: tokens)
+        var expectedMessage = ""
+        expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
+        expectedMessage += "               Mike , < 20 chars after.\n"
+        expectedMessage += "                    ⤴"
 
-            var expectedMessage = ""
-            expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
-            expectedMessage += "               Mike , < 20 chars after.\n"
-            expectedMessage += "                    ⤴"
-
-            expect(message) == expectedMessage
-        } catch {
-            fail()
-        }
+        validateException(context, expectedMessage: expectedMessage)
     }
 
     func testExceptionErrorMessageAtBeginningOfLine() {
-        let parser = token("hi") && token("Mike") && token(":")
-        let context = "hello                            Mike , < 20 chars after."
-        do {
-            _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.ParsingException {
-            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
-            let message = error.errorMessage(context: context, tokens: tokens)
+        let context = "Hello                            Mike , < 20 chars after."
+        var expectedMessage = ""
+        expectedMessage += "Error: Unexpected token (Hello) found. At line: 1 character: 1\n"
+        expectedMessage += "Hello                    \n"
+        expectedMessage += "⤴"
 
-            var expectedMessage = ""
-            expectedMessage += "Error: Unexpected token (hello) found. At line: 1 character: 1\n"
-            expectedMessage += "hello                    \n"
-            expectedMessage += "⤴"
-
-            expect(message) == expectedMessage
-        } catch {
-            fail()
-        }
+        validateException(context, expectedMessage: expectedMessage)
     }
 
     func testExceptionErrorMessageAtEndOfLine() {
-        let parser = token("hello") && token("Mike") && token(":")
         let context = "hello                            Mike ,\n < 20 chars after."
-        do {
-            _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.ParsingException {
-            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
-            let message = error.errorMessage(context: context, tokens: tokens)
+        var expectedMessage = ""
+        expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
+        expectedMessage += "               Mike ,\n"
+        expectedMessage += "                    ⤴"
 
-            var expectedMessage = ""
-            expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
-            expectedMessage += "               Mike ,\n"
-            expectedMessage += "                    ⤴"
-
-            expect(message) == expectedMessage
-        } catch {
-            fail()
-        }
+        validateException(context, expectedMessage: expectedMessage)
     }
 
     func testExceptionErrorMessageAtEndOfFile() {
-        let parser = token("hello") && token("Mike") && token(":")
         let context = "hello                            Mike"
-        do {
-            _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
-        } catch let error as Parser.ParsingException {
-            let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
-            let message = error.errorMessage(context: context, tokens: tokens)
+        var expectedMessage = ""
+        expectedMessage += "Error: Unexpected EOF. At line: 1 character: 38\n"
+        expectedMessage += "                 Mike\n"
+        expectedMessage += "                    ⤴"
 
-            var expectedMessage = ""
-            expectedMessage += "Error: Unexpected EOF. At line: 1 character: 38\n"
-            expectedMessage += "                 Mike\n"
-            expectedMessage += "                    ⤴"
-
-            expect(message) == expectedMessage
-        } catch {
-            fail()
-        }
+        validateException(context, expectedMessage: expectedMessage)
     }
 
     func testExceptionErrorMessageExpectedEOF() {
-        let parser = token("hello") && token("Mike") && eof()
-        let context = "hello                            Mike ,"
+        let context = "hello                            Mike : xx"
+        var expectedMessage = ""
+        expectedMessage += "Error: Expected EOF but there are still tokens to process. At line: 1 character: 41\n"
+        expectedMessage += "             Mike : xx\n"
+        expectedMessage += "                    ⤴"
+
+        validateException(context, expectedMessage: expectedMessage)
+    }
+
+    private func validateException(_ context: String, expectedMessage: String) {
         do {
             _ = try parser.parse(context, tokenizer: Tokenizer.wordTokenizer) as String?
         } catch let error as Parser.ParsingException {
             let tokens = Tokenizer.wordTokenizer.tokenize(sequence: context)
             let message = error.errorMessage(context: context, tokens: tokens)
-
-            var expectedMessage = ""
-            expectedMessage += "Error: Expected EOF but there are still tokens to process. At line: 1 character: 39\n"
-            expectedMessage += "               Mike ,\n"
-            expectedMessage += "                    ⤴"
 
             expect(message) == expectedMessage
         } catch {
