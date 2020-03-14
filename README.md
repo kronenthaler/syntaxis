@@ -1,5 +1,9 @@
-![branch-check](https://github.com/kronenthaler/syntaxis/workflows/branch-check/badge.svg)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ddf9d1cd3074694923c1ac0b35654a3)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kronenthaler/syntaxis&amp;utm_campaign=Badge_Grade) 
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/kronenthaler/syntaxis/branch-check/master?logo=github&style=flat-square)](https://github.com/kronenthaler/sintaxis/actions?query=workflow%3Abranch-check)
+[![Codacy branch coverage](https://img.shields.io/codacy/coverage/bf3a88799e974cf6b93b09794f80868d/master?logo=codacy&style=flat-square)](https://www.codacy.com/app/kronenthaler/syntaxis?utm_source=github.com&utm_medium=referral&utm_content=kronenthaler/pbxproj&utm_campaign=badger)
+[![Codacy grade](https://img.shields.io/codacy/grade/bf3a88799e974cf6b93b09794f80868d?logo=codacy&style=flat-square)](https://www.codacy.com/app/kronenthaler/syntaxis?utm_source=github.com&utm_medium=referral&utm_content=kronenthaler/syntaxis&utm_campaign=badger)
+![Cocoapods](https://img.shields.io/cocoapods/v/syntaxis?logo=cocoapods&style=flat-square)
+![Cocoapods platforms](https://img.shields.io/cocoapods/p/syntaxis?style=flat-square)
+[![Cocoapods](https://img.shields.io/cocoapods/l/syntaxis?logo=cocoapods&style=flat-square)](LICENSE)
 
 # Syntaxis
 
