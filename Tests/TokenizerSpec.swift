@@ -8,8 +8,8 @@
 
 import Foundation
 import Nimble
-import XCTest
 @testable import Syntaxis
+import XCTest
 
 class TokenizerSpec: XCTestCase {
     enum Types: Int, TokenType {

@@ -6,9 +6,9 @@
 //  Copyright © 2020 Ignacio Calderon. All rights reserved.
 //
 
-import XCTest
 import Nimble
 @testable import Syntaxis
+import XCTest
 
 class BenchmarkSpec: XCTestCase {
     let jsonParser: Parser = {
@@ -37,7 +37,7 @@ class BenchmarkSpec: XCTestCase {
             var result: [String: Any] = [:]
             if let items = something as? [[String: Any]] {
                 for item in items {
-                    result = result.merging(item) { (_, new) -> Any in new }
+                    result = result.merging(item) { _, new -> Any in new }
                 }
                 return result
             }
@@ -179,7 +179,6 @@ class BenchmarkSpec: XCTestCase {
         if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
             let data = try? Data(contentsOf: url),
             let content = String(data: data, encoding: .utf8) {
-
             self.measure {
                 do {
                     let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?

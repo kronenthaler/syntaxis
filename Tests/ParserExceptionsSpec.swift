@@ -8,8 +8,8 @@
 
 import Foundation
 import Nimble
-import XCTest
 @testable import Syntaxis
+import XCTest
 
 class ParserExceptionsSpec: XCTestCase {
     private let parser = token("hello") && token("Mike") && token(":") && eof()

@@ -8,11 +8,10 @@
 
 import Foundation
 import Nimble
-import XCTest
 @testable import Syntaxis
+import XCTest
 
 class ParserCombinatorsSpec: XCTestCase {
-
     func testTokenNotFound() {
         let parser = token("hello")
 

@@ -352,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Tests\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
 		};
 		C9475776241190BA00EA77E0 /* Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -370,7 +370,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Classes\" ; swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
 		};
 		C94757772411926B00EA77E0 /* Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -388,7 +388,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Tests\" ; swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			shellScript = "swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -406,7 +406,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Classes\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
 		};
 		F1A0DCAB4B0E9CB97439AEB3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -643,7 +643,10 @@
 			baseConfigurationReference = AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,6 +655,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.SyntaxisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -662,7 +667,10 @@
 			baseConfigurationReference = 97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -671,6 +679,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.SyntaxisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
