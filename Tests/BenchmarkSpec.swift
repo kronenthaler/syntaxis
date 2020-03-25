@@ -17,20 +17,20 @@ class BenchmarkSpec: XCTestCase {
         let `null` = token("null") => { _ in return NSNull() }
         let `false` = token("false") => { _ in return false }
         let `true` = token("true") => { _ in return true }
-        let number = some { (token: Tokenizer.Token) -> Bool in
-            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue
-            } => { ($0 as? NSString)?.floatValue as Any }
-        let string = some { (token: Tokenizer.Token) -> Bool in
-            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue
-        }
-        let array = (`operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")) => { $0 }
+        let number = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue }
+            => { ($0 as? NSString)?.floatValue as Any }
+        let string = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue }
+        let array = `operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")
         let member = (string && `operator`(":") && value) => {
             (something: Any) -> Any in
-            if let pair = something as? [Any],
-                let key = pair[0] as? String {
-                return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
+            guard
+                let pair = something as? [Any],
+                let key = pair[0] as? String
+                else {
+                    return something
             }
-            return something
+
+            return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
         }
         let dict = (`operator`("{") && maybe(member && (`operator`(",") && member)*) && `operator`("}")) => {
             (something: Any) -> Any in
