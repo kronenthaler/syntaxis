@@ -25,7 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        id: checkout
 
       - name: Prerequisites
         run: |
@@ -49,13 +48,14 @@ jobs:
     runs-on: macos-latest
     
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
       - name: Download test results
         uses: actions/download-artifact@v1
         with:
           name: test-result-iphonesimulator
-
-      - name: Report Lint
-        run: swiftlint lint --config .swiftlint.yml Classes/ Tests/
+          path: ./build/run.xcresult
 
       - name: Codacy check
         run: |
