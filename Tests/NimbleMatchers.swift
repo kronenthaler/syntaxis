@@ -11,7 +11,7 @@ import Nimble
 @testable import Syntaxis
 
 func matchIgnoredToken<T: Equatable>(_ expected: T?) -> Predicate<Any> {
-    return Predicate.define("equal <ignored(token:\(String(describing: expected)))>", matcher: { expression, message -> PredicateResult in
+    return Predicate.define("equal <ignored(token:\(String(describing: expected)))>") { expression, message -> PredicateResult in
         let actual = try expression.evaluate() as? Tokenizer.SpecialTokens
 
         if  case let .ignored(token: tokenValue) = actual,
@@ -20,5 +20,5 @@ func matchIgnoredToken<T: Equatable>(_ expected: T?) -> Predicate<Any> {
         }
 
         return PredicateResult.init(status: .doesNotMatch, message: message)
-    })
+    }
 }

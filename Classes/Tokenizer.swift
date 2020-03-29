@@ -26,12 +26,12 @@ public class Tokenizer {
     // basic tokenizers (per char, per word)
     public static var defaultTokenizer: Tokenizer = {
         let regex = try? NSRegularExpression(pattern: "(.)", options: .caseInsensitive)
-        return Tokenizer(expression: regex ?? NSRegularExpression(), rules: [(index:1, type: DefaultTokenType.character)])
+        return Tokenizer(expression: regex!, rules: [(index: 1, type: DefaultTokenType.character)])
     }()
 
     public static var wordTokenizer: Tokenizer = {
         let regex = try? NSRegularExpression(pattern: #"(\S+)"#, options: .caseInsensitive)
-        return Tokenizer(expression: regex ?? NSRegularExpression(), rules: [(index:1, type: DefaultTokenType.character)])
+        return Tokenizer(expression: regex!, rules: [(index: 1, type: DefaultTokenType.character)])
     }()
 
     // data

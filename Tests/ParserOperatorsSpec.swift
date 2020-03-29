@@ -8,11 +8,10 @@
 
 import Foundation
 import Nimble
-import XCTest
 @testable import Syntaxis
+import XCTest
 
 class ParserOperatorsSpec: XCTestCase {
-
     func testAndFailingFirstParser() {
         let parserA = token("hello")
         let parserB = token("John")
@@ -155,5 +154,4 @@ class ParserOperatorsSpec: XCTestCase {
             try parser.parse("howdy John", tokenizer: Tokenizer.wordTokenizer) as String?
         }.to(throwError(Parser.UnexpectedTokenException(token: "howdy", state: (0, 0))))
     }
-
 }

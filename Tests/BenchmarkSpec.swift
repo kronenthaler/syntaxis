@@ -6,9 +6,9 @@
 //  Copyright © 2020 Ignacio Calderon. All rights reserved.
 //
 
-import XCTest
 import Nimble
 @testable import Syntaxis
+import XCTest
 
 class BenchmarkSpec: XCTestCase {
     let jsonParser: Parser = {
@@ -17,27 +17,27 @@ class BenchmarkSpec: XCTestCase {
         let `null` = token("null") => { _ in return NSNull() }
         let `false` = token("false") => { _ in return false }
         let `true` = token("true") => { _ in return true }
-        let number = some { (token: Tokenizer.Token) -> Bool in
-            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue
-            } => { ($0 as? NSString)?.floatValue as Any }
-        let string = some { (token: Tokenizer.Token) -> Bool in
-            (token.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue
-        }
-        let array = (`operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")) => { $0 }
+        let number = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue }
+            => { ($0 as? NSString)?.floatValue as Any }
+        let string = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue }
+        let array = `operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")
         let member = (string && `operator`(":") && value) => {
             (something: Any) -> Any in
-            if let pair = something as? [Any],
-                let key = pair[0] as? String {
-                return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
+            guard
+                let pair = something as? [Any],
+                let key = pair[0] as? String
+                else {
+                    return something
             }
-            return something
+
+            return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
         }
         let dict = (`operator`("{") && maybe(member && (`operator`(",") && member)*) && `operator`("}")) => {
             (something: Any) -> Any in
             var result: [String: Any] = [:]
             if let items = something as? [[String: Any]] {
                 for item in items {
-                    result = result.merging(item) { (_, new) -> Any in new }
+                    result = result.merging(item) { _, new -> Any in new }
                 }
                 return result
             }
@@ -179,7 +179,6 @@ class BenchmarkSpec: XCTestCase {
         if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
             let data = try? Data(contentsOf: url),
             let content = String(data: data, encoding: .utf8) {
-
             self.measure {
                 do {
                     let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?

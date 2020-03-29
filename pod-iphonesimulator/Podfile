@@ -1,0 +1,9 @@
+workspace '../Syntaxis.xcworkspace'
+project '../Syntaxis.xcodeproj'
+
+platform :ios, '11.0'
+
+target 'SyntaxisTests' do
+  use_frameworks!
+  pod 'Nimble'
+end

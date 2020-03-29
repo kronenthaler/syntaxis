@@ -8,11 +8,10 @@
 
 import Foundation
 import Nimble
-import XCTest
 @testable import Syntaxis
+import XCTest
 
 class ParserSpec: XCTestCase {
-
     private func ptrToString (pointer buf: UnsafeMutableRawPointer, length: Int) -> String {
         let filteredArray = Array(UnsafeBufferPointer(start: buf.assumingMemoryBound(to: UInt8.self), count: length))
         return filteredArray

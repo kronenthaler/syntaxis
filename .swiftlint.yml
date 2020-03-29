@@ -1,3 +1,22 @@
+included:
+  - Classes
+  - Tests
+
+opt_in_rules:
+  - modifier_order
+  - closure_spacing
+  - let_var_whitespace
+  - operator_usage_whitespace
+  - vertical_whitespace_between_cases
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - trailing_closure
+  - prefer_self_type_over_type_of_self
+  - single_test_class
+  - sorted_imports
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+
 reporter: "xcode"
 line_length:
   warning: 130

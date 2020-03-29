@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02C3240F894F9D14DE1FB1CC /* Pods_Syntaxis_SyntaxisTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0745928059CD536485706FEA /* Pods_Syntaxis_SyntaxisTests.framework */; };
-		6283357760BBED00D7B3B2E2 /* Pods_Syntaxis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 399B7E88035072A881A6D598 /* Pods_Syntaxis.framework */; };
+		2A9CA28B34EA0389CA69AE1C /* Pods_SyntaxisTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB46CC2C92C5542A5435773 /* Pods_SyntaxisTests.framework */; };
 		C92A839623E30E8500583992 /* ParserSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A839523E30E8500583992 /* ParserSpec.swift */; };
 		C95745F223EEF63700FE753A /* Parser+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F123EEF63700FE753A /* Parser+Operators.swift */; };
 		C95745F423EEF66E00FE753A /* Parser+Combinators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95745F323EEF66E00FE753A /* Parser+Combinators.swift */; };
@@ -37,11 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0745928059CD536485706FEA /* Pods_Syntaxis_SyntaxisTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Syntaxis_SyntaxisTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		399B7E88035072A881A6D598 /* Pods_Syntaxis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Syntaxis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.release.xcconfig"; path = "Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.release.xcconfig"; sourceTree = "<group>"; };
-		AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BB7A1BE67EE03A8C9042B61F /* Pods-Syntaxis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.release.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.release.xcconfig"; sourceTree = "<group>"; };
+		0B30CCDA3A035325EC5E88E4 /* Pods-SyntaxisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SyntaxisTests.debug.xcconfig"; path = "../pod-iphonesimulator/Pods/Target Support Files/Pods-SyntaxisTests/Pods-SyntaxisTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2EA1F13839434AAB00866F91 /* Pods-SyntaxisTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SyntaxisTests.release.xcconfig"; path = "../pod-iphonesimulator/Pods/Target Support Files/Pods-SyntaxisTests/Pods-SyntaxisTests.release.xcconfig"; sourceTree = "<group>"; };
+		97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.release.xcconfig"; path = "../pod-macosx/Pods/Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.release.xcconfig"; sourceTree = "<group>"; };
+		9FB46CC2C92C5542A5435773 /* Pods_SyntaxisTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SyntaxisTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; path = "../pod-macosx/Pods/Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C92A839523E30E8500583992 /* ParserSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserSpec.swift; sourceTree = "<group>"; };
 		C95745F123EEF63700FE753A /* Parser+Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Operators.swift"; sourceTree = "<group>"; };
 		C95745F323EEF66E00FE753A /* Parser+Combinators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Combinators.swift"; sourceTree = "<group>"; };
@@ -60,7 +59,6 @@
 		C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserExceptionsSpec.swift; sourceTree = "<group>"; };
 		C9EB6A5D23E46792005ADF72 /* NimbleMatchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleMatchers.swift; sourceTree = "<group>"; };
 		C9FC8AE823F976B600255431 /* BenchmarkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkSpec.swift; sourceTree = "<group>"; };
-		F6D2C561345B9F14DAD8C0B1 /* Pods-Syntaxis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Syntaxis.debug.xcconfig"; path = "Target Support Files/Pods-Syntaxis/Pods-Syntaxis.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6283357760BBED00D7B3B2E2 /* Pods_Syntaxis.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C98F5D7723D9BEC2009C5447 /* Syntaxis.framework in Frameworks */,
-				02C3240F894F9D14DE1FB1CC /* Pods_Syntaxis_SyntaxisTests.framework in Frameworks */,
+				2A9CA28B34EA0389CA69AE1C /* Pods_SyntaxisTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,10 +84,10 @@
 		1A0A3068172F0C8AB330F948 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F6D2C561345B9F14DAD8C0B1 /* Pods-Syntaxis.debug.xcconfig */,
-				BB7A1BE67EE03A8C9042B61F /* Pods-Syntaxis.release.xcconfig */,
 				AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */,
 				97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */,
+				0B30CCDA3A035325EC5E88E4 /* Pods-SyntaxisTests.debug.xcconfig */,
+				2EA1F13839434AAB00866F91 /* Pods-SyntaxisTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -98,8 +95,7 @@
 		5329E1D637E9C157F5F277A1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				399B7E88035072A881A6D598 /* Pods_Syntaxis.framework */,
-				0745928059CD536485706FEA /* Pods_Syntaxis_SyntaxisTests.framework */,
+				9FB46CC2C92C5542A5435773 /* Pods_SyntaxisTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -196,7 +192,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C98F5D8123D9BEC2009C5447 /* Build configuration list for PBXNativeTarget "Syntaxis" */;
 			buildPhases = (
-				7EB171564F7C7D9C8944C9C9 /* [CP] Check Pods Manifest.lock */,
 				C98F5D6823D9BEC2009C5447 /* Headers */,
 				C98F5D6923D9BEC2009C5447 /* Sources */,
 				C98F5D6A23D9BEC2009C5447 /* Frameworks */,
@@ -222,8 +217,8 @@
 				C98F5D7323D9BEC2009C5447 /* Frameworks */,
 				C98F5D7423D9BEC2009C5447 /* Resources */,
 				F1A0DCAB4B0E9CB97439AEB3 /* [CP] Embed Pods Frameworks */,
-				C938DE8823FAC7A6001E1351 /* Linting */,
 				C94757772411926B00EA77E0 /* Format */,
+				C938DE8823FAC7A6001E1351 /* Linting */,
 			);
 			buildRules = (
 			);
@@ -292,28 +287,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7EB171564F7C7D9C8944C9C9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Syntaxis-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		93119E36E89B48C0D41D4FC4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,7 +302,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Syntaxis-SyntaxisTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SyntaxisTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -352,7 +325,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Tests\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			showEnvVarsInLog = 0;
 		};
 		C9475776241190BA00EA77E0 /* Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -370,7 +344,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Classes\" ; swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			showEnvVarsInLog = 0;
 		};
 		C94757772411926B00EA77E0 /* Format */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -388,7 +363,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Tests\" ; swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			shellScript = "swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			showEnvVarsInLog = 0;
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -406,7 +382,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SRCROOT}/Classes\" ; swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\"\n";
+			shellScript = "swiftlint lint --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
+			showEnvVarsInLog = 0;
 		};
 		F1A0DCAB4B0E9CB97439AEB3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -414,15 +391,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SyntaxisTests/Pods-SyntaxisTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SyntaxisTests/Pods-SyntaxisTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Syntaxis-SyntaxisTests/Pods-Syntaxis-SyntaxisTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SyntaxisTests/Pods-SyntaxisTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -587,7 +564,6 @@
 		};
 		C98F5D8223D9BEC2009C5447 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6D2C561345B9F14DAD8C0B1 /* Pods-Syntaxis.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -614,7 +590,6 @@
 		};
 		C98F5D8323D9BEC2009C5447 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB7A1BE67EE03A8C9042B61F /* Pods-Syntaxis.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -640,10 +615,13 @@
 		};
 		C98F5D8523D9BEC2009C5447 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA1D087BDF1D8AF4980231D5 /* Pods-Syntaxis-SyntaxisTests.debug.xcconfig */;
+			baseConfigurationReference = 0B30CCDA3A035325EC5E88E4 /* Pods-SyntaxisTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,6 +630,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.SyntaxisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -659,10 +639,13 @@
 		};
 		C98F5D8623D9BEC2009C5447 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97BB0E8D429844C689FC6AB2 /* Pods-Syntaxis-SyntaxisTests.release.xcconfig */;
+			baseConfigurationReference = 2EA1F13839434AAB00866F91 /* Pods-SyntaxisTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -671,6 +654,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.SyntaxisTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
