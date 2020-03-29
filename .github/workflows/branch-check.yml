@@ -1,0 +1,80 @@
+name: branch-check
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test ${{ matrix.platform }}
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        platform: [macosx, iphonesimulator]
+        include:
+          - platform: macosx
+            destination: "arch=x86_64"
+          - platform: iphonesimulator
+            destination: "name=iPhone 11,OS=latest"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Prerequisites
+        run: |
+          gem install xcpretty
+          brew install swiftlint
+          pod install --project-directory=pod-${{ matrix.platform }}
+
+      - name: Test
+        run: |
+          xcodebuild clean test -workspace Syntaxis.xcworkspace -scheme Syntaxis -sdk ${{ matrix.platform }} -destination "${{ matrix.destination }}" -derivedDataPath ./build -resultBundlePath ./build/run.xcresult -enableCodeCoverage YES | xcpretty --report junit --output reports/test-report.xml
+
+      - name: Archive
+        uses: actions/upload-artifact@v1
+        with:
+          name: test-result-${{ matrix.platform }}
+          path: ./build/run.xcresult
+
+  report:
+    name: Reports
+    needs: test
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Download test results
+        uses: actions/download-artifact@v1
+        with:
+          name: test-result-iphonesimulator
+          path: ./build/run.xcresult
+
+      - name: Codacy check
+        run: |
+          # extract the coverage information from the result bundle
+          xcrun xccov view --report --json build/run.xcresult > cov.json
+
+          # clone the tool to convert xccov to lcov
+          git clone https://github.com/trax-retail/xccov2lcov
+
+          # convert the coverage reports
+          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info && cd ..
+
+          # download codacy coverage reporter
+          curl -H "Authorization: token $CURL_TOKEN" -LS "https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest" -o codacy-release.json
+          export CODACY_COVERAGE_REPORTER_URL=`python -c "import json; print([x['browser_download_url'] for x in json.load(open('codacy-release.json', 'r'))['assets'] if x['browser_download_url'].endswith('jar')][0])"`
+          curl -H "Authorization: token $CURL_TOKEN" -LS "$CODACY_COVERAGE_REPORTER_URL" -o codacy-coverage-reporter.jar
+
+          # submit the coverage report to codacy
+          java -jar codacy-coverage-reporter.jar report -l Swift --force-language -r lcov.info
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          CURL_TOKEN: ${{ secrets.CURL_TOKEN }}
