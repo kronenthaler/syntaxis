@@ -12,7 +12,7 @@ import Nimble
 import XCTest
 
 class ParserExceptionsSpec: XCTestCase {
-    private let parser = token("hello") && token("Mike") && token(":") && eof()
+    private let parser = token("hello") + token("Mike") + token(":") + eof()
 
     func testParsingExceptionCoderInitializer() {
         expect {

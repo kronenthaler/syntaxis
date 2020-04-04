@@ -43,7 +43,7 @@ class ParserSpec: XCTestCase {
         let pipe = Pipe()
         dup2(pipe.fileHandleForWriting.fileDescriptor, fileno(stdout))
 
-        let parser = token("hello") && token("Mike") && eof()
+        let parser = token("hello") + token("Mike") + eof()
         let context = "hello                            Mike , "
 
         _ = try? parser.parse(context, options: [.verboseError], tokenizer: Tokenizer.wordTokenizer) as String?
@@ -57,13 +57,13 @@ class ParserSpec: XCTestCase {
         let pipe = Pipe()
         dup2(pipe.fileHandleForWriting.fileDescriptor, fileno(stdout))
 
-        let parser = token("hello") && token("Mike") && eof()
+        let parser = token("hello") + token("Mike") + eof()
         let context = "hello Mike"
 
         _ = try? parser.parse(context, options: [.printParser], tokenizer: Tokenizer.wordTokenizer) as String?
 
         let output = readBuffer(from: pipe)
 
-        expect(output) == "((\"hello\" && \"Mike\") && <EOF>)"
+        expect(output) == "((\"hello\" + \"Mike\") + <EOF>)"
     }
 }

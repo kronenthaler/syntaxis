@@ -15,12 +15,17 @@ postfix operator +  // one or more (one plus)
 
 extension Parser {
     static func && (left: Parser, right: Parser) -> Parser {
-        return Parser("(\(left.debugDescription) && \(right.debugDescription))") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
+        return Parser("(\(left.debugDescription) + \(right.debugDescription))") { (tokens: [Tokenizer.Token], state: State) throws -> ParserTuple in
             let tupleA = try left.run(tokens, state: state)
             let tupleB = try right.run(tokens, state: tupleA.state)
 
-            return (mergeValues(tupleA.value, tupleB.value), state: tupleB.state)
+            return (value: mergeValues(tupleA.value, tupleB.value), state: tupleB.state)
         }
+    }
+
+    // shorthand of && 
+    static func + (left: Parser, right: Parser) -> Parser {
+        return left && right
     }
 
     private static func mergeValues(_ value1: Any, _ value2: Any) -> Any {
@@ -93,7 +98,7 @@ extension Parser {
     }
 
     static postfix func + (parser: Parser) -> Parser {
-        return (parser && (parser)*)
+        return (parser + (parser)*)
             .named("(\(parser.debugDescription))+")
     }
 }

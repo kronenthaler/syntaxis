@@ -12,7 +12,7 @@ import XCTest
 
 class BenchmarkSpec: XCTestCase {
     let jsonParser: Parser = {
-        let `operator` = { (char: String) -> Parser in skip(token(char)) }
+        let symbol = { (char: String) -> Parser in skip(token(char)) }
         let value = Parser("value")
         let `null` = token("null") => { _ in return NSNull() }
         let `false` = token("false") => { _ in return false }
@@ -20,8 +20,8 @@ class BenchmarkSpec: XCTestCase {
         let number = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue }
             => { ($0 as? NSString)?.floatValue as Any }
         let string = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue }
-        let array = `operator`("[") && maybe(value && (`operator`(",") && value)*) && `operator`("]")
-        let member = (string && `operator`(":") && value) => {
+        let array = symbol("[") + maybe(value + (symbol(",") + value)*) + symbol("]")
+        let member = (string + symbol(":") + value) => {
             (something: Any) -> Any in
             guard
                 let pair = something as? [Any],
@@ -32,7 +32,7 @@ class BenchmarkSpec: XCTestCase {
 
             return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
         }
-        let dict = (`operator`("{") && maybe(member && (`operator`(",") && member)*) && `operator`("}")) => {
+        let dict = (symbol("{") + maybe(member + (symbol(",") + member)*) + symbol("}")) => {
             (something: Any) -> Any in
             var result: [String: Any] = [:]
             if let items = something as? [[String: Any]] {
@@ -43,18 +43,18 @@ class BenchmarkSpec: XCTestCase {
             }
             return something
         }
-        return (value <- (`null` || `true` || `false` || string || number || array || dict)) && eof()
+        return (value <- (`null` || `true` || `false` || string || number || array || dict)) + eof()
     }()
 
     var jsonTokenizer: Tokenizer = Tokenizer(expression: NSRegularExpression(), rules: [])
 
     enum JsonTokenType: Int, TokenType {
-        case `null` = 0
+        case `null` = 1
         case `false`
         case `true`
         case numeric
         case string
-        case `operator`
+        case symbol
     }
 
     override func setUp() {
@@ -76,7 +76,7 @@ class BenchmarkSpec: XCTestCase {
                 (3, JsonTokenType.true),
                 (4, JsonTokenType.string),
                 (5, JsonTokenType.numeric),
-                (6, JsonTokenType.operator)
+                (6, JsonTokenType.symbol)
             ])
         } catch {
             fail(error.localizedDescription)

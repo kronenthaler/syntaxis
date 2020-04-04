@@ -99,7 +99,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testEOFBeforeEOF() {
-        let parser = token("hello") && eof()
+        let parser = token("hello") + eof()
 
         expect {
             try parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
@@ -107,7 +107,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testEOFAtEOF() {
-        let parser = token("hello") && eof()
+        let parser = token("hello") + eof()
 
         let result = try? parser.parse("hello   ", tokenizer: Tokenizer.wordTokenizer) as String?
 
