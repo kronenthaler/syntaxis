@@ -16,7 +16,7 @@ class ParserOperatorsSpec: XCTestCase {
         let parserA = token("hello")
         let parserB = token("John")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         expect {
             try parser.parse("hi John", tokenizer: Tokenizer.wordTokenizer) as String?
@@ -27,7 +27,7 @@ class ParserOperatorsSpec: XCTestCase {
         let parserA = token("hello")
         let parserB = token("John")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         expect {
             try parser.parse("hello Mike", tokenizer: Tokenizer.wordTokenizer) as String?
@@ -35,10 +35,10 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testAndSuccessIgnoredObject() {
-        let parserA = skip(token("hello"))
+        let parserA = skip("hello")
         let parserB = token("John")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
 
@@ -46,10 +46,10 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testAndSuccessIgnoredList() {
-        let parserA = skip(token("hello"))
-        let parserB = token("John") + token("Doe")
+        let parserA = skip("hello")
+        let parserB = "John" && "Doe"
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -58,9 +58,9 @@ class ParserOperatorsSpec: XCTestCase {
 
     func testAndSuccessObjectIgnored() {
         let parserA = token("hello")
-        let parserB = skip(token("John"))
+        let parserB = skip("John")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
 
@@ -71,7 +71,7 @@ class ParserOperatorsSpec: XCTestCase {
         let parserA = token("hello")
         let parserB = token("John")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -80,9 +80,9 @@ class ParserOperatorsSpec: XCTestCase {
 
     func testAndSuccessObjectList() {
         let parserA = token("hello")
-        let parserB = token("John") + token("Doe")
+        let parserB = "John" && "Doe"
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -90,10 +90,10 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testAndSuccessListIgnored() {
-        let parserA = token("hello") + token("John")
-        let parserB = skip(token("Doe"))
+        let parserA = "hello" && "John"
+        let parserB = skip("Doe")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -101,10 +101,10 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testAndSuccessListObject() {
-        let parserA = token("hello") + token("John")
+        let parserA = "hello" && "John"
         let parserB = token("Doe")
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John Doe", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -112,10 +112,10 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testAndSuccessListList() {
-        let parserA = token("hello") + token("John")
-        let parserB = token("long") + token("time")
+        let parserA = "hello" && "John"
+        let parserB = "long" && "time"
 
-        let parser = parserA + parserB
+        let parser = parserA && parserB
 
         let result = try? parser.parse("hello John long time", tokenizer: Tokenizer.wordTokenizer) as [String]?
 
@@ -124,7 +124,7 @@ class ParserOperatorsSpec: XCTestCase {
 
     func testOrFirstSuccessful() {
         let parserA = token("hello")
-        let parserB = token("hi")
+        let parserB = "hi"
 
         let parser = parserA || parserB
 
@@ -134,7 +134,7 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testOrSecondSuccessful() {
-        let parserA = token("hello")
+        let parserA = "hello"
         let parserB = token("hi")
 
         let parser = parserA || parserB
@@ -145,13 +145,21 @@ class ParserOperatorsSpec: XCTestCase {
     }
 
     func testOrBothFailed() {
-        let parserA = token("hello")
-        let parserB = token("hi")
+        let parserA = "hello"
+        let parserB = "hi"
 
         let parser = parserA || parserB
 
         expect {
             try parser.parse("howdy John", tokenizer: Tokenizer.wordTokenizer) as String?
         }.to(throwError(Parser.UnexpectedTokenException(token: "howdy", state: (0, 0))))
+    }
+
+    func testTransformUnexpectedInputType() {
+        let parser = "hello" => { (_: [String]) -> String in return "" }
+
+        expect {
+            try parser.parse("hello", tokenizer: Tokenizer.wordTokenizer) as String?
+        }.to(throwError(Parser.RuntimeException(reason: "Unexpected type for transformation")))
     }
 }

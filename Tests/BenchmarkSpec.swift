@@ -12,38 +12,28 @@ import XCTest
 
 class BenchmarkSpec: XCTestCase {
     let jsonParser: Parser = {
-        let symbol = { (char: String) -> Parser in skip(token(char)) }
         let value = Parser("value")
-        let `null` = token("null") => { _ in return NSNull() }
-        let `false` = token("false") => { _ in return false }
-        let `true` = token("true") => { _ in return true }
-        let number = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.numeric.rawValue }
-            => { ($0 as? NSString)?.floatValue as Any }
-        let string = some { ($0.type as? JsonTokenType)?.rawValue == JsonTokenType.string.rawValue }
-        let array = symbol("[") + maybe(value + (symbol(",") + value)*) + symbol("]")
-        let member = (string + symbol(":") + value) => {
-            (something: Any) -> Any in
-            guard
-                let pair = something as? [Any],
-                let key = pair[0] as? String
-                else {
-                    return something
+        let `null` = token("null") => { (_: String) -> NSNull in return NSNull() }
+        let `false` = token("false") => { (_: String) -> Bool in return false }
+        let `true` = token("true") => { (_: String) -> Bool in return true }
+        let number = tokenType(JsonTokenType.numeric) => { (value: String) -> Float in Float(value)! }
+        let string = tokenType(JsonTokenType.string)
+        let array = skip("[") && maybe(value && (skip(",") && value)*) && skip("]")
+        let member = (string && skip(":") && value) => { (pair: [Any]) -> [String: Any] in
+            guard let key = pair[0] as? String else {
+                return [:]
             }
 
             return [key: pair.count == 1 ? [] : (pair.count == 2 ? pair[1] : Array(pair[1...]))]
         }
-        let dict = (symbol("{") + maybe(member + (symbol(",") + member)*) + symbol("}")) => {
-            (something: Any) -> Any in
+        let dict = (skip("{") && maybe(member && (skip(",") && member)*) && skip("}")) => { (items: [[String: Any]]) -> [String: Any] in
             var result: [String: Any] = [:]
-            if let items = something as? [[String: Any]] {
-                for item in items {
-                    result = result.merging(item) { _, new -> Any in new }
-                }
-                return result
+            for item in items {
+                result = result.merging(item) { _, new -> Any in new }
             }
-            return something
+            return result
         }
-        return (value <- (`null` || `true` || `false` || string || number || array || dict)) + eof()
+        return (value <- (`null` || `true` || `false` || string || number || array || dict)) && EOF
     }()
 
     var jsonTokenizer: Tokenizer = Tokenizer(expression: NSRegularExpression(), rules: [])

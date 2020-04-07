@@ -13,7 +13,7 @@ public class Parser {
     public typealias ParserTuple = (value: Any, state: State)
     public typealias Functor = ([Tokenizer.Token], State) throws -> ParserTuple
     public typealias Filter = (Tokenizer.Token) -> Bool
-    public typealias Transformation = (Any) -> Any
+    public typealias Transformation<InputType: Any, ResultType: Any> = (InputType) -> ResultType
 
     public struct Options: OptionSet {
         public let rawValue: Int
@@ -35,12 +35,12 @@ public class Parser {
     private var name: String
     var definition: Functor?
 
-    init(_ name: String = "parser()") {
+    public init(_ name: String = "parser()") {
         // this should be overridden in some point by the other implementations
         self.name = name
     }
 
-    convenience init(_ name: String = "parser(){", _ functor: @escaping Functor) {
+    public convenience init(_ name: String = "parser(){", _ functor: @escaping Functor) {
         self.init(name)
         self.definition = functor
     }
