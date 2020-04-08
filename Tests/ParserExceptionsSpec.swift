@@ -37,7 +37,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Unexpected token (,) found. At line: 5 character: 11\n"
         expectedMessage += "     Mike , < 20 chars after.\n"
-        expectedMessage += "          ⤴"
+        expectedMessage += "          ^"
 
         validateException(context, expectedMessage: expectedMessage)
     }
@@ -47,7 +47,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
         expectedMessage += "               Mike , < 20 chars after.\n"
-        expectedMessage += "                    ⤴"
+        expectedMessage += "                    ^"
 
         validateException(context, expectedMessage: expectedMessage)
     }
@@ -57,7 +57,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Unexpected token (Hello) found. At line: 1 character: 1\n"
         expectedMessage += "Hello                    \n"
-        expectedMessage += "⤴"
+        expectedMessage += "^^^^^"
 
         validateException(context, expectedMessage: expectedMessage)
     }
@@ -67,7 +67,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Unexpected token (,) found. At line: 1 character: 39\n"
         expectedMessage += "               Mike ,\n"
-        expectedMessage += "                    ⤴"
+        expectedMessage += "                    ^"
 
         validateException(context, expectedMessage: expectedMessage)
     }
@@ -77,7 +77,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Unexpected EOF. At line: 1 character: 38\n"
         expectedMessage += "                 Mike\n"
-        expectedMessage += "                    ⤴"
+        expectedMessage += "                    ^"
 
         validateException(context, expectedMessage: expectedMessage)
     }
@@ -87,7 +87,7 @@ class ParserExceptionsSpec: XCTestCase {
         var expectedMessage = ""
         expectedMessage += "Error: Expected EOF but there are still tokens to process. At line: 1 character: 41\n"
         expectedMessage += "             Mike : xx\n"
-        expectedMessage += "                    ⤴"
+        expectedMessage += "                    ^^"
 
         validateException(context, expectedMessage: expectedMessage)
     }

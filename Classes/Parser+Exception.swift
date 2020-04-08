@@ -79,7 +79,7 @@ extension Parser {
             return """
             Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
             \(target)
-            \(String(repeating: " ", count: max(0, shift)))⤴
+            \(String(repeating: " ", count: max(0, shift)))\(String(repeating: "^", count: upperBound - lowerBound))
             """
         }
     }
