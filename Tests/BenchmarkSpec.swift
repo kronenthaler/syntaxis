@@ -7,7 +7,7 @@
 //
 
 import Nimble
-@testable import Syntaxis
+import Syntaxis
 import XCTest
 
 class BenchmarkSpec: XCTestCase {

@@ -8,7 +8,7 @@
 
 import Foundation
 import Nimble
-@testable import Syntaxis
+import Syntaxis
 import XCTest
 
 class ParserOperatorsSpec: XCTestCase {

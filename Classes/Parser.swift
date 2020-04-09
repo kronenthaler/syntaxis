@@ -21,19 +21,19 @@ public class Parser {
         public init(rawValue: Int) { self.rawValue = rawValue }
 
         /// print a detailed message about the location of the syntactic error
-        static let verboseError = Options(rawValue: 1)
+        public static let verboseError = Options(rawValue: 1)
 
         /// print the parser representation before to the execution
-        static let printParser = Options(rawValue: 1 << 1)
+        public static let printParser = Options(rawValue: 1 << 1)
 
         /// alias of printParser + verboseError
-        static let verbose: Options = [.verboseError, .printParser]
+        public static let verbose: Options = [.verboseError, .printParser]
 
         // TO-DO: more options for formatting the error unicode/plain, colors/no-colors, stdout/stderr
     }
 
     private var name: String
-    var definition: Functor?
+    internal var definition: Functor?
 
     public init(_ name: String = "parser()") {
         // this should be overridden in some point by the other implementations
