@@ -27,7 +27,7 @@ For a complete documentation about what is available and how to use it check the
 
 This project welcomes any contributions. This project will try a different approach to deal with issues/bugs.
 
-Since this library is intended to be used by developers, it will be very easy for you to report issues in the form of a failing unit test in a MR. 
+Since this library is intended to be used by developers, it will be very easy for you to report issues in the form of a failing unit test in a pull request. 
 
 This have few benefits in the long run:
 
