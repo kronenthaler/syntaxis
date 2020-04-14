@@ -12,7 +12,7 @@ A _parser combinator_ (or _combinator_ for short), is a function that receives s
 
 ## Parser Combinators 
 
-_Syntaxis_ provides with a set of parser combinators that can be join together to achieve more complex parsers. Essentially, whenever you write your parser, you are actually creating a new (very specific) parser combinator. Most of these parser's usages are demonstrated in the example [here](./first-parser.md).
+_Syntaxis_ provides with a set of parser combinators that can be join together to achieve more complex parsers. Essentially, whenever you write your parser, you are actually creating a new (very specific) parser combinator. Most of these parser's usages are demonstrated in the example [here](https://github.com/kronenthaler/syntaxis/tree/master/Docs/first-parser.md).
 
 | Combinator/Operator                    | Description                                                  |
 | -------------------------------------- | ------------------------------------------------------------ |
@@ -28,7 +28,7 @@ _Syntaxis_ provides with a set of parser combinators that can be join together t
 | `(Parser)* -> Parser`                  | MANY operator. Returns a parser that ensures the given parser is successful zero or more times. This parser never fails. |
 | `(Parser)+ -> Parser`                  | 1 or more operator. Returns a parser that ensures the given parser is successful at least once, and possible many more times afterwards. |
 | `(Parser => Transformation) -> Parser` | Transformation operator. Returns a parser that will evaluate the given parser and apply the transformation function over the result to be returned. Useful to create AST's as the content gets parsed. |
-| `(Parser <- Parser) -> Parser`         | Define operator. Returns a parser that has be overridden with the second parser function.  This is extremely handy for parsers with recursive nature on which one definition depends on itself (directly or indirectly). (see [example](./first-parser.md#parser-definition)) |
+| `(Parser <- Parser) -> Parser`         | Define operator. Returns a parser that has be overridden with the second parser function.  This is extremely handy for parsers with recursive nature on which one definition depends on itself (directly or indirectly). (see [example](https://github.com/kronenthaler/syntaxis/tree/master/Docs/first-parser.md#parser-definition)) |
 
 ## Syntactic sugar
 
@@ -56,7 +56,7 @@ For example, if your grammar has a left-recursion, something like `<s> ::= <s> +
 
 Also, because the parser combinators don't do look-aheads, the order on which you define your rules have a big impact on performance and how far/often the parser needs to backtrack to an stable position to keep moving forward.
 
-For example, the JSON example [here](./first-parser.md),
+For example, the JSON example [here](https://github.com/kronenthaler/syntaxis/tree/master/Docs/first-parser.md),
 
 ```swift
 value <- (`null` || `true` || `false` || string || number || array || dict)

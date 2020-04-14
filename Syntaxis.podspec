@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name = "Syntaxis"
-  spec.version = "0.2.0"
+  spec.version = "0.2.1"
   spec.summary = "Yet another functional parser library"
   spec.homepage = "https://github.com/kronenthaler/Syntaxis"
   spec.license = { :type => "MIT", :file => "LICENSE" }

@@ -21,7 +21,7 @@ pod 'Syntaxis'
 
 ## Getting started
 
-For a complete documentation about what is available and how to use it check the [documentation folder](Docs/index.md).
+For a complete documentation about what is available and how to use it check the [documentation folder](https://github.com/kronenthaler/syntaxis/tree/master/Docs/index.md).
 
 ## Contributing
 
@@ -36,4 +36,4 @@ This have few benefits in the long run:
 
 ## License
 
-This project is licensed under the MIT license. For more details check [here](LICENSE)
+This project is licensed under the MIT license. For more details check [here](https://github.com/kronenthaler/syntaxis/tree/master/LICENSE)
