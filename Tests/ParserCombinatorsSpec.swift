@@ -8,7 +8,7 @@
 
 import Foundation
 import Nimble
-@testable import Syntaxis
+import Syntaxis
 import XCTest
 
 class ParserCombinatorsSpec: XCTestCase {
@@ -35,7 +35,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testSkipParser() {
-        let parser = skip(token("hello"))
+        let parser = skip("hello")
 
         let result: Tokenizer.SpecialTokens? = try? parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer)
 
@@ -43,7 +43,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testManyNoMatches() {
-        let parser = (token("a"))*
+        let parser = ("a")*
 
         let result = try? parser.parse("bbbbb") as [String]?
 
@@ -51,7 +51,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testManyFewMatches() {
-        let parser = (token("a"))*
+        let parser = ("a")*
 
         let result = try? parser.parse("aaaab") as [String]?
 
@@ -59,7 +59,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testManyAllMatches() {
-        let parser = (token("a"))*
+        let parser = ("a")*
 
         let result = try? parser.parse("aaaa") as [String]?
 
@@ -67,7 +67,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testOnePlusNoMatches() {
-        let parser = (token("a"))+
+        let parser = ("a")+
 
         expect {
             try parser.parse("baaa") as [String]?
@@ -75,7 +75,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testOnePlusManyMatches() {
-        let parser = (token("a"))+
+        let parser = ("a")+
 
         let result = try? parser.parse("aaaa") as [String]?
 
@@ -83,7 +83,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testMaybeNoMatch() {
-        let parser = maybe(token("Hi"))
+        let parser = maybe("Hi")
 
         let result = try? parser.parse("Hello John", tokenizer: Tokenizer.wordTokenizer) as Tokenizer.SpecialTokens?
 
@@ -91,7 +91,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testMaybeMatch() {
-        let parser = maybe(token("Hello"))
+        let parser = maybe("Hello")
 
         let result = try? parser.parse("Hello John", tokenizer: Tokenizer.wordTokenizer) as String?
 
@@ -99,7 +99,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testEOFBeforeEOF() {
-        let parser = token("hello") && eof()
+        let parser = "hello" && EOF
 
         expect {
             try parser.parse("hello John", tokenizer: Tokenizer.wordTokenizer) as String?
@@ -107,7 +107,7 @@ class ParserCombinatorsSpec: XCTestCase {
     }
 
     func testEOFAtEOF() {
-        let parser = token("hello") && eof()
+        let parser = "hello" && EOF
 
         let result = try? parser.parse("hello   ", tokenizer: Tokenizer.wordTokenizer) as String?
 

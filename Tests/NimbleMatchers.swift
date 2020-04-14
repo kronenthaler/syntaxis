@@ -8,7 +8,7 @@
 
 import Foundation
 import Nimble
-@testable import Syntaxis
+import Syntaxis
 
 func matchIgnoredToken<T: Equatable>(_ expected: T?) -> Predicate<Any> {
     return Predicate.define("equal <ignored(token:\(String(describing: expected)))>") { expression, message -> PredicateResult in

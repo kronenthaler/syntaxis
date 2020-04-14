@@ -54,6 +54,7 @@
 		C98F5D8723D9C264009C5447 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		C98F5D8923D9C55E009C5447 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerSpec.swift; sourceTree = "<group>"; };
+		C9BE89CA243FC019000FB91F /* Syntaxis.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = Syntaxis.podspec; sourceTree = SOURCE_ROOT; };
 		C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserCombinatorsSpec.swift; sourceTree = "<group>"; };
 		C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserOperatorsSpec.swift; sourceTree = "<group>"; };
 		C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserExceptionsSpec.swift; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 		C9EE68F12405B77200323022 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C9BE89CA243FC019000FB91F /* Syntaxis.podspec */,
 				C98F5D7123D9BEC2009C5447 /* Info.plist */,
 				C98F5D7023D9BEC2009C5447 /* Syntaxis.h */,
 			);

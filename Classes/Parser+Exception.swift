@@ -10,11 +10,11 @@ import Foundation
 
 extension Parser {
     public class RuntimeException: NSException, Error {
-        init(reason: String) {
+        public init(reason: String) {
             super.init(name: NSExceptionName(rawValue: "Runtime parsing Exception"), reason: reason, userInfo: nil)
         }
 
-        required init?(coder: NSCoder) {
+        public required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
     }
@@ -22,7 +22,7 @@ extension Parser {
     public class ParsingException: NSException, Error {
         public private(set) var state: State?
 
-        init(reason: String, state: State? = nil) {
+        public init(reason: String, state: State? = nil) {
             self.state = state
             super.init(name: NSExceptionName(rawValue: "Parsing exception"), reason: reason, userInfo: [:])
         }
@@ -79,7 +79,7 @@ extension Parser {
             return """
             Error: \(self.reason!) At line: \(lines.count) character: \(characterPosition)
             \(target)
-            \(String(repeating: " ", count: max(0, shift)))⤴
+            \(String(repeating: " ", count: max(0, shift)))\(String(repeating: "^", count: upperBound - lowerBound))
             """
         }
     }
@@ -87,7 +87,7 @@ extension Parser {
     public class UnexpectedTokenException: ParsingException {
         private var token: String
 
-        init(token: String, state: State? = nil) {
+        public init(token: String, state: State? = nil) {
             self.token = token
             super.init(reason: "Unexpected token (\(token)) found.", state: state)
         }
