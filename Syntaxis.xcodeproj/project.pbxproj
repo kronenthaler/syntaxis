@@ -385,7 +385,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPOD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" Classes/Supporting\\ Files/Info.plist)\nsed -i '' -e \"s|spec.version = \\\"\\(.*\\)\\\"|spec.version = \\\"${POD_VERSION}\\\"|g\" Syntaxis.podspec\n";
+			shellScript = "POD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" Classes/Supporting\\ Files/Info.plist)\nsed -i '' -e \"s|spec.version = \\\"\\(.*\\)\\\"|spec.version = \\\"${POD_VERSION}\\\"|g\" ${TARGET_NAME}.podspec\n";
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
