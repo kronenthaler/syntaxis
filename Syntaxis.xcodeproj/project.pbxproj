@@ -54,7 +54,7 @@
 		C98F5D8723D9C264009C5447 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		C98F5D8923D9C55E009C5447 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		C98F5D8B23D9C9E2009C5447 /* TokenizerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerSpec.swift; sourceTree = "<group>"; };
-		C9BE89CA243FC019000FB91F /* Syntaxis.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = Syntaxis.podspec; sourceTree = SOURCE_ROOT; };
+		C9BE89CA243FC019000FB91F /* Syntaxis.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Syntaxis.podspec; sourceTree = SOURCE_ROOT; };
 		C9D97FAD2403FB2D000352A3 /* ParserCombinatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserCombinatorsSpec.swift; sourceTree = "<group>"; };
 		C9D97FAF2403FBCC000352A3 /* ParserOperatorsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserOperatorsSpec.swift; sourceTree = "<group>"; };
 		C9D97FB12403FC23000352A3 /* ParserExceptionsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserExceptionsSpec.swift; sourceTree = "<group>"; };
@@ -200,6 +200,7 @@
 				C98F5D6B23D9BEC2009C5447 /* Resources */,
 				C9475776241190BA00EA77E0 /* Format */,
 				C9CA6FFF23F745CB004D5811 /* Linting */,
+				C9B6260824619BD70086FFA7 /* Sync Podspec version */,
 			);
 			buildRules = (
 			);
@@ -367,6 +368,24 @@
 			shellPath = /bin/sh;
 			shellScript = "swiftlint autocorrect --format --config \"${SRCROOT}/.swiftlint.yml\" --no-cache\n";
 			showEnvVarsInLog = 0;
+		};
+		C9B6260824619BD70086FFA7 /* Sync Podspec version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Sync Podspec version";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nPOD_VERSION=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" Classes/Supporting\\ Files/Info.plist)\nsed -i '' -e \"s|spec.version = \\\"\\(.*\\)\\\"|spec.version = \\\"${POD_VERSION}\\\"|g\" Syntaxis.podspec\n";
 		};
 		C9CA6FFF23F745CB004D5811 /* Linting */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -581,6 +600,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.Syntaxis;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -607,6 +627,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.kronenthaler.Syntaxis;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

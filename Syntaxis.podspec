@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name = "Syntaxis"
-  spec.version = "0.2.1"
+  spec.version = "0.2.2"
   spec.summary = "Yet another functional parser library"
   spec.homepage = "https://github.com/kronenthaler/Syntaxis"
   spec.license = { :type => "MIT", :file => "LICENSE" }
@@ -29,5 +29,5 @@ Pod::Spec.new do |spec|
 
   spec.source_files = "Classes/**/*.{swift,h}"
   spec.public_header_files = "Classes/**/*.h"
-  spec.preserve_paths = "README.md"
+  spec.preserve_paths = ["README.md", "LICENSE"]
 end
