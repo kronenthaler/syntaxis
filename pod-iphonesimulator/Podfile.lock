@@ -1,5 +1,5 @@
 PODS:
-  - Nimble (8.0.5)
+  - Nimble (9.0.0)
 
 DEPENDENCIES:
   - Nimble
@@ -9,7 +9,7 @@ SPEC REPOS:
     - Nimble
 
 SPEC CHECKSUMS:
-  Nimble: 4ab1aeb9b45553c75b9687196b0fa0713170a332
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
 
 PODFILE CHECKSUM: c56cc39969d2427b7bd03800399e070e39e822fe
 
