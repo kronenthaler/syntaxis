@@ -29,7 +29,7 @@ jobs:
       - name: Prerequisites
         run: |
           gem install xcpretty
-          brew install swiftlint
+          brew link --overwrite swiftlint
           pod install --project-directory=pod-${{ matrix.platform }}
 
       - name: Test
