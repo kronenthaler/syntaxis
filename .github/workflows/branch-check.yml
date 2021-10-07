@@ -1,6 +1,8 @@
 name: branch-check
 
 on:
+  schedule:
+    - cron: '* * 1 * *'
   push:
     branches:
       - '*'
@@ -29,7 +31,6 @@ jobs:
       - name: Prerequisites
         run: |
           gem install xcpretty
-          brew link --overwrite swiftlint
           pod install --project-directory=pod-${{ matrix.platform }}
 
       - name: Test
@@ -57,17 +58,19 @@ jobs:
           name: test-result-iphonesimulator
           path: ./build/run.xcresult
 
-      - name: Codacy check
+      - name: Convert coverage report
         run: |
-          # extract the coverage information from the result bundle
-          xcrun xccov view --report --json build/run.xcresult > cov.json
-
           # clone the tool to convert xccov to lcov
           git clone https://github.com/trax-retail/xccov2lcov
 
-          # convert the coverage reports
-          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info && cd ..
+          # extract the coverage information from the result bundle
+          xcrun xccov view --report --json build/run.xcresult > cov.json
 
+          # convert the coverage reports
+          cd xccov2lcov ; swift run xccov2lcov ../cov.json > ../lcov.info
+
+      - name: Codacy check
+        run: |
           # download codacy coverage reporter
           curl -H "Authorization: token $CURL_TOKEN" -LS "https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest" -o codacy-release.json
           export CODACY_COVERAGE_REPORTER_URL=`python -c "import json; print([x['browser_download_url'] for x in json.load(open('codacy-release.json', 'r'))['assets'] if x['browser_download_url'].endswith('jar')][0])"`
