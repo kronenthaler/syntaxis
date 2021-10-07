@@ -155,8 +155,8 @@ class BenchmarkSpec: XCTestCase {
     func testPersformanceTokenizer100kb() {
         let bundle = Bundle(for: BenchmarkSpec.self)
         if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
-            let data = try? Data(contentsOf: url),
-            let content = String(data: data, encoding: .utf8) {
+           let data = try? Data(contentsOf: url),
+           let content = String(data: data, encoding: .utf8) {
             self.measure {
                 _ = jsonTokenizer.tokenize(sequence: content)
             }
@@ -167,8 +167,8 @@ class BenchmarkSpec: XCTestCase {
         // load a sample json file from a decent size > 5kb
         let bundle = Bundle(for: BenchmarkSpec.self)
         if let url = bundle.url(forResource: "sample-100kb", withExtension: "json"),
-            let data = try? Data(contentsOf: url),
-            let content = String(data: data, encoding: .utf8) {
+           let data = try? Data(contentsOf: url),
+           let content = String(data: data, encoding: .utf8) {
             self.measure {
                 do {
                     let result = try jsonParser.parse(content, tokenizer: jsonTokenizer) as [Any]?
