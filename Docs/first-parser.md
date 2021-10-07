@@ -208,8 +208,8 @@ Lets use the pieces we have created so far:
 
 ```swift
 do {
-  	let jsonText = """{ "fib": [1, 1, 2, 3, 5, 8, 13], "enabled": true }"""
-    let result = try jsonParser.parse(jsonText,                                    tokenizer: jsonTokenizer) as [String: Any]?
+    let jsonText = """{ "fib": [1, 1, 2, 3, 5, 8, 13], "enabled": true }"""
+    let result = try jsonParser.parse(jsonText, tokenizer: jsonTokenizer) as [String: Any]?
 } catch {
     fatalError("Unable to parse the content: \(error.localizedDescription)")
 }
